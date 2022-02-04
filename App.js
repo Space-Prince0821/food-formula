@@ -1,35 +1,52 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { borderColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
-import logo from './assets/logo_white.png';
-import Buttons from './Buttons'
-
-export default function App() {
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Login from './components/login';
+import Signup from './components/signup';
+import Dashboard from './components/dashboard';
+const Stack = createStackNavigator();
+function MyStack() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Food-Formula</Text>
-      <Image style={styles.logo} source={logo} alt={"Logo"}/>
-      <Buttons />
-      <StatusBar style="auto" />
-    </View>
+    <Stack.Navigator
+      initialRouteName="Signup"
+      screenOptions={{
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: '#3740FE',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}>
+      <Stack.Screen 
+        name="Signup" 
+        component={Signup} 
+        options={{ title: 'Signup' }}
+      />       
+      <Stack.Screen 
+        name="Login" 
+        component={Login} 
+        options={
+          {title: 'Login'},
+          {headerLeft: null} 
+        }
+      />
+      <Stack.Screen 
+       name="Dashboard" 
+       component={Dashboard} 
+       options={
+         { title: 'Dashboard' },
+         {headerLeft: null} 
+       }
+      />
+    </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffafcc',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 50,
-    color: '#fff',
-    fontWeight: 'bold'
-  },
-  logo: {
-    marginTop: 40,
-    width: 250,
-    height: 250
-  }
-});
+export default function App() {
+  return (
+    <NavigationContainer>
+      <MyStack />
+    </NavigationContainer>
+  );
+}
