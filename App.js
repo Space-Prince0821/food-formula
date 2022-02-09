@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { NavigationContainer, Text, Image } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
-import { borderColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 import logo from './assets/logo_white.png';
-
+//Components
 import Login from './components/login';
 import Register from './components/register';
 import Buttons from './components/Buttons';
-
 
 export default function App() {
   return (
@@ -19,3 +16,21 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backroundColor: '#ffafcc',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 50,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  logo: {
+    marginTop: 40,
+    width: 250,
+    height: 250
+  },
+});
