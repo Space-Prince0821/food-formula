@@ -70,7 +70,7 @@ export default class Signup extends Component {
         />   
         <Button
           color="#ffafcc"
-          title="Signup"
+          title="Register"
           onPress={() => this.registerUser()}
         />
         <Text 

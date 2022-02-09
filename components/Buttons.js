@@ -1,5 +1,6 @@
 import { StyleSheet} from '@react-navigation/native';
-import { StyleSheet } from 'react-native';
+//import { StyleSheet } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
