@@ -11,8 +11,7 @@ export default function App() {
     <NavigationContainer styles={styles.container}>
       <Buttons />
       <Text style={styles.title}>Food Formula</Text>
-    <Image styles={styles.logo} source={logo} alt={"Logo"}></Image>
-      
+      <Image styles={styles.logo} source={logo} alt={"Logo"}></Image>
     </NavigationContainer>
   );
 }
