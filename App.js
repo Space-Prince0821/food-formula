@@ -32,14 +32,6 @@ function MyStack() {
           {headerLeft: null} 
         }
       />
-      <Stack.Screen 
-       name="Dashboard" 
-       component={Dashboard} 
-       options={
-         { title: 'Dashboard' },
-         {headerLeft: null} 
-       }
-      />
     </Stack.Navigator>
   );
 }
