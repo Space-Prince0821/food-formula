@@ -1,35 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { borderColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
-import logo from './assets/logo_white.png';
-import Buttons from './Buttons'
+import * as React from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import Home from "./components/Home";
+import Scan from "./components/Scan";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Food-Formula</Text>
-      <Image style={styles.logo} source={logo} alt={"Logo"}/>
-      <Buttons />
-      <StatusBar style="auto" />
-    </View>
-  );
+export default class App extends React.Component {
+    state = {
+        page: 1,
+    };
+
+    pickPageToRender = () => {
+        if (this.state.page === 1) {
+            return (<Home pageChange={(pageNum) => this.setState({page: pageNum})} />);
+        }
+        if (this.state.page === 2) {
+            return (<Scan pageChange={(pageNum) => this.setState({page: pageNum})} />);
+        }
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                {this.pickPageToRender()}
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffafcc',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 50,
-    color: '#fff',
-    fontWeight: 'bold'
-  },
-  logo: {
-    marginTop: 40,
-    width: 250,
-    height: 250
-  }
-});
+    container: {
+      flex: 1,
+      backgroundColor: '#ffafcc',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }
+  });
