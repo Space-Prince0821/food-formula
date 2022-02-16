@@ -4,27 +4,28 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { borderColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 import logo from '../assets/logo_white.png';
 
-export default class Home extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Food-Formula</Text>
-        <Image style={styles.logo} source={logo} alt={"Logo"}/>
-        <View style={styles.buttonsContainer}>
-            <TouchableOpacity style={styles.touchContainer}>
-                <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.touchContainer}>
-                <Text style={styles.buttonText}>Register</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.touchContainer} onPress={() => this.props.pageChange(2)}>
-                <Text style={styles.buttonText}>Continue as Guest</Text>
-            </TouchableOpacity>
-        </View>
-        <StatusBar style="auto" />
+const Home = ({ navigation }) => {
+  const onGuestHandler = () => {
+    navigation.navigate('Scan');
+  };
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Food-Formula</Text>
+      <Image style={styles.logo} source={logo} alt={"Logo"}/>
+      <View style={styles.buttonsContainer}>
+          <TouchableOpacity style={styles.touchContainer}>
+              <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.touchContainer}>
+              <Text style={styles.buttonText}>Register</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.touchContainer} onPress={onGuestHandler}>
+              <Text style={styles.buttonText}>Continue as Guest</Text>
+          </TouchableOpacity>
       </View>
-    );
-  }
+      <StatusBar style="auto" />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -61,3 +62,5 @@ const styles = StyleSheet.create({
       color: "#a2d2ff"
   }
 });
+
+export default Home;
