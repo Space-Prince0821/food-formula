@@ -21,7 +21,6 @@ export default function App() {
           component={Home} 
         />
         <Stack.Screen 
-          
           name="LoginScreen" 
           component={LoginScreen} 
         />
