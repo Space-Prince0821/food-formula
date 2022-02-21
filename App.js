@@ -1,36 +1,31 @@
-import * as React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import Home from "./components/Home";
-import Scan from "./components/Scan";
+import Welcome from './screens/Welcome';
+import Home from './screens/Home';
+import LoginScreen from './screens/LoginScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default class App extends React.Component {
-    state = {
-        page: 1,
-    };
+const Stack = createNativeStackNavigator();
 
-    pickPageToRender = () => {
-        if (this.state.page === 1) {
-            return (<Home pageChange={(pageNum) => this.setState({page: pageNum})} />);
-        }
-        if (this.state.page === 2) {
-            return (<Scan pageChange={(pageNum) => this.setState({page: pageNum})} />);
-        }
-    }
-
-    render() {
-        return (
-            <View style={styles.container}>
-                {this.pickPageToRender()}
-            </View>
-        );
-    }
-}
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#ffafcc',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }
-  });
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen 
+          options={{headerShown: false}} 
+          name="Welcome" 
+          component={Welcome} 
+        />
+        <Stack.Screen 
+          name="Home"
+          options={{headerShown: false}}
+          component={Home} 
+        />
+        <Stack.Screen 
+          name="LoginScreen" 
+          component={LoginScreen} 
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+    //<Navigator />
+  );
+};
