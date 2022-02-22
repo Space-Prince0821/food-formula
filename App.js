@@ -1,31 +1,35 @@
-import Welcome from './screens/Welcome';
-import Home from './screens/Home';
-import LoginScreen from './screens/LoginScreen';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-const Stack = createNativeStackNavigator();
+import * as React from 'react';
+import { NavigationContainer, Text, Image } from '@react-navigation/native';
+import logo from './assets/logo_white.png';
+//Components
+// import Login from './components/login';
+// import Register from './components/register';
+import Buttons from './components/Buttons';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen 
-          options={{headerShown: false}} 
-          name="Welcome" 
-          component={Welcome} 
-        />
-        <Stack.Screen 
-          name="Home"
-          options={{headerShown: false}}
-          component={Home} 
-        />
-        <Stack.Screen 
-          name="LoginScreen" 
-          component={LoginScreen} 
-        />
-      </Stack.Navigator>
+    <NavigationContainer styles={styles.container}>
+      <Buttons />
+      <Text style={styles.title}>Food Formula</Text>
+      <Image styles={styles.logo} source={logo} alt={"Logo"}></Image>
     </NavigationContainer>
-    //<Navigator />
   );
-};
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backroundColor: '#ffafcc',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 50,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  logo: {
+    marginTop: 40,
+    width: 250,
+    height: 250
+  },
+});
