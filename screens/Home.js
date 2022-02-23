@@ -5,7 +5,8 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import { Camera } from "expo-camera";
-import { CameraType } from "expo-camera/build/Camera.types";
+import { AutoFocus, CameraType } from "expo-camera/build/Camera.types";
+import flip from '../assets/flip.jpg';
 
 const Home = () => {
     const auth = getAuth();
@@ -59,10 +60,11 @@ const Home = () => {
                                   : Camera.Constants.Type.back
                             )
                         }}>
-                        <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect} />
+                        <Image style={styles.touchContainer} source={flip} alt={"Flip"}/>
                     </TouchableOpacity>
-                    <StatusBar style="auto" />
                 </Camera>
+                <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect} />
+                <StatusBar style="auto" />
             </View>
             <View style={styles.container2}>
                 <TouchableOpacity
@@ -109,6 +111,11 @@ const styles = StyleSheet.create({
         marginTop: 50,
         //borderWidth: 2,
     },
+    camera: {
+        width: 500,
+        height: 400,
+        alignItems: 'center',
+      },
     cameraSelect: {
         width: 200,
         height: 200,
@@ -145,7 +152,13 @@ const styles = StyleSheet.create({
     container3: {
         //borderWidth: 2,
         alignItems: 'center',
-        marginTop: 70
+        height: 500,
+    },
+    touchContainer: {
+        borderRadius: 150/3,
+        width: 40,
+        height: 40,
+        position: 'absolute',
     }
 });
 
