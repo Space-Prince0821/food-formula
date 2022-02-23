@@ -52,7 +52,6 @@ const Home = () => {
                 <Text style = {{fontWeight: 'bold', color: '#FFFFFF', fontSize: 40, marginBottom: 60, textAlign: 'center'}}>Welcome to Food Formula!</Text>
                 <Camera style={styles.camera} type={type}>
                     <TouchableOpacity
-                        style = {styles.touchContainer}
                         onPress={() => {
                             setType(
                                 type === Camera.Constants.Type.back
@@ -62,8 +61,10 @@ const Home = () => {
                         }}>
                         <Image style={styles.touchContainer} source={flip} alt={"Flip"}/>
                     </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect} />
+                    </TouchableOpacity>
                 </Camera>
-                <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect} />
                 <StatusBar style="auto" />
             </View>
             <View style={styles.container2}>
@@ -117,10 +118,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
       },
     cameraSelect: {
-        width: 200,
-        height: 200,
-        marginBottom: 10,
-        borderWidth: 4,
+        width: 60,
+        height: 60,
+        bottom: 0,
         overflow: "hidden",
         borderRadius: 150/3,
       },
@@ -151,14 +151,22 @@ const styles = StyleSheet.create({
     },
     container3: {
         //borderWidth: 2,
-        alignItems: 'center',
-        height: 500,
+        // alignItems: 'center',
+        // height: 500,
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        right: 0,
+        left: 0,
+        justifyContent: 'flex-end'
     },
     touchContainer: {
         borderRadius: 150/3,
         width: 40,
         height: 40,
-        position: 'absolute',
+        bottom: 0,
+        right: 0
+
     }
 });
 
