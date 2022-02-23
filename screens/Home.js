@@ -18,6 +18,10 @@ const Home = () => {
             .catch(error =>  alert(error.message))
     };
 
+    const onPressHandler = () => {
+        navigation.navigate("RecipeScreen")
+    }
+
     return(
         <View style={styles.container}>
             <View style={styles.container0}>
@@ -27,7 +31,8 @@ const Home = () => {
                 <Text style = {{fontWeight: 'bold', color: '#FFFFFF', fontSize: 40, marginBottom: 60, textAlign: 'center'}}>Welcome to Food Formula!</Text>
                 <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect} />
                 <TouchableOpacity
-                    style = {styles.touchContainer}>
+                    style = {styles.touchContainer}
+                    onPress={onPressHandler}>
                     <Text style = {styles.buttonText}>Click to scan dish!</Text>
                 </TouchableOpacity>
                 <StatusBar style="auto" />
