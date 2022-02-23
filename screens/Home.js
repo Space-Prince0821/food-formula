@@ -1,53 +1,77 @@
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
-import react from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import React, { PureComponent } from "react";
+import { View, Text, Image, StyleSheet, AppRegistry } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { StatusBar } from 'expo-status-bar';
+import { RNCamera } from "react-native-camera";
 
-const Home = () => {
-    const auth = getAuth();
-    const navigation = useNavigation();
+class Home extends PureComponent {
+    //const auth = getAuth();
+    // const navigation = useNavigation();
 
-    const handleSignOut = () => {
-        auth
-            .signOut()
-            .then(() => {
-                navigation.replace("LoginScreen");
-            })
-            .catch(error =>  alert(error.message))
+    // handleSignOut = () => {
+    //     auth
+    //         .signOut()
+    //         .then(() => {
+    //             navigation.replace("LoginScreen");
+    //         })
+    //         .catch(error =>  alert(error.message))
+    // };
+    constructor(props) {
+        super(props);
+        this.state = {
+            isCameraVisible: false
+        }
+    }
+
+    showCameraView = () => {
+        this.setState({isCameraVisible: true});
+    }
+
+    render(){
+        return(
+            <View style={styles.container}>
+                <View style={styles.container3}>
+                    <Text style = {{fontWeight: 'bold', color: '#FFFFFF', fontSize: 40, marginBottom: 60, textAlign: 'center'}}>Welcome to Food Formula!</Text>
+                    <TouchableOpacity onPress={()=> this.takePicture.bind(this)}>
+                            
+                        <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect}/>
+
+                    </TouchableOpacity>
+                    <StatusBar style="auto" />
+                </View>
+
+                {/* <View style={styles.container2}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={this.handleSignOut()}
+                    >
+                        <Text style={styles.buttonText}>Sign out</Text>
+                    </TouchableOpacity>
+                </View> */}
+            </View>
+        );
     };
+}
 
-    return(
-        <View style={styles.container}>
-            <View style={styles.container0}>
-                <Text style={{fontWeight: 'bold', fontSize: 20}}>Email: {auth.currentUser?.email}</Text>
-            </View>
-            <View style={styles.container3}>
-                <Text style = {{fontWeight: 'bold', color: '#FFFFFF', fontSize: 40, marginBottom: 60, textAlign: 'center'}}>Welcome to Food Formula!</Text>
-                <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect} />
-                <TouchableOpacity
-                    style = {styles.touchContainer}>
-                    <Text style = {styles.buttonText}>Click to scan dish!</Text>
-                </TouchableOpacity>
-                <StatusBar style="auto" />
-            </View>
-            <View style={styles.container2}>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={handleSignOut}
-                >
-                    <Text style={styles.buttonText}>Sign out</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
-};
+takePicture = async () => {
+    if(this.camera) {
+        const options = {quality: 0.5, base64: true};
+        const data = await this.camera.takePictureAsync(options);
+        console.log(data.url)
+    }
+}
 
 const styles = StyleSheet.create({
     container0: {
         marginTop: 90,
         //borderWidth: 2,
+    },
+    preview: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
     },
     container: {
         flex: 1,
