@@ -1,77 +1,85 @@
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
-import React, { PureComponent } from "react";
-import { View, Text, Image, StyleSheet, AppRegistry } from "react-native";
+import React, { useState, useEffect} from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { StatusBar } from 'expo-status-bar';
-import { RNCamera } from "react-native-camera";
+import { Camera } from "expo-camera";
+import { CameraType } from "expo-camera/build/Camera.types";
 
-class Home extends PureComponent {
-    //const auth = getAuth();
-    // const navigation = useNavigation();
+const Home = () => {
+    const auth = getAuth();
+    const navigation = useNavigation();
 
-    // handleSignOut = () => {
-    //     auth
-    //         .signOut()
-    //         .then(() => {
-    //             navigation.replace("LoginScreen");
-    //         })
-    //         .catch(error =>  alert(error.message))
-    // };
-    constructor(props) {
-        super(props);
-        this.state = {
-            isCameraVisible: false
-        }
+    //Camera state
+    const [hasPermission, setHasPermission] = useState(null);
+    const [type, setType] = useState(Camera.Constants.Type.back);
+
+    useEffect(() => {
+        (async () => {
+            const { status } = await Camera.requestCameraPermissionsAsync();
+            setHasPermission(status === "granted");
+        }) ();
+    },  []);
+
+    if (hasPermission === null) {
+        return <View />;
+    }
+    if (hasPermission === false) {
+        return <Text>Access to camera denied</Text>;
     }
 
-    showCameraView = () => {
-        this.setState({isCameraVisible: true});
+    const handleSignOut = () => {
+        auth
+            .signOut()
+            .then(() => {
+                navigation.replace("LoginScreen");
+            })
+            .catch(error =>  alert(error.message))
+    };
+
+    const onPressHandler = () => {
+        navigation.navigate("RecipeScreen")
     }
 
-    render(){
-        return(
-            <View style={styles.container}>
-                <View style={styles.container3}>
-                    <Text style = {{fontWeight: 'bold', color: '#FFFFFF', fontSize: 40, marginBottom: 60, textAlign: 'center'}}>Welcome to Food Formula!</Text>
-                    <TouchableOpacity onPress={()=> this.takePicture.bind(this)}>
-                            
-                        <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect}/>
-
+    return(
+        <View style={styles.container}>
+            <View style={styles.container0}>
+                <Text style={{fontWeight: 'bold', fontSize: 20}}>Email: {auth.currentUser?.email}</Text>
+            </View>
+            <View style={styles.container3}>
+                <Text style = {{fontWeight: 'bold', color: '#FFFFFF', fontSize: 40, marginBottom: 60, textAlign: 'center'}}>Welcome to Food Formula!</Text>
+                <Camera style={styles.camera} type={type}>
+                    <TouchableOpacity
+                        style = {styles.touchContainer}
+                        onPress={() => {
+                            setType(
+                                type === Camera.Constants.Type.back
+                                  ? Camera.Constants.Type.front
+                                  : Camera.Constants.Type.back
+                            )
+                        }}>
+                        <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect} />
                     </TouchableOpacity>
                     <StatusBar style="auto" />
-                </View>
-
-                {/* <View style={styles.container2}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={this.handleSignOut()}
-                    >
-                        <Text style={styles.buttonText}>Sign out</Text>
-                    </TouchableOpacity>
-                </View> */}
+                </Camera>
             </View>
-        );
-    };
-}
-
-takePicture = async () => {
-    if(this.camera) {
-        const options = {quality: 0.5, base64: true};
-        const data = await this.camera.takePictureAsync(options);
-        console.log(data.url)
-    }
-}
+            <View style={styles.container2}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleSignOut}
+                >
+                    <Text style={styles.buttonText}>Sign out</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     container0: {
         marginTop: 90,
         //borderWidth: 2,
-    },
-    preview: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
     },
     container: {
         flex: 1,
