@@ -7,6 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Camera } from "expo-camera";
 import { AutoFocus, CameraType } from "expo-camera/build/Camera.types";
 import flip from '../assets/flip.jpg';
+import * as ImagePicker from 'expo-image-picker';
 
 const Home = () => {
     const auth = getAuth();
@@ -15,6 +16,7 @@ const Home = () => {
     //Camera state
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
+    const [imageUri, setImageUri] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -41,7 +43,28 @@ const Home = () => {
 
     const onPressHandler = () => {
         navigation.navigate("RecipeScreen")
-    }
+    };
+
+    const pictureTaken = async () => {
+        if (camera) {
+            const data = await this.camera.takePictureAsync(null);
+            console.log(data.uri);
+            setImageUri(data.uri);
+        }
+    };
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [1, 1],
+          quality: 1,
+        });
+    
+        console.log(result);
+        if (!result.cancelled) {
+          setImageUri(result.uri);
+        }
+      };
 
     return(
         <View style={styles.container}>
@@ -50,7 +73,9 @@ const Home = () => {
             </View>
             <View style={styles.container3}>
                 <Text style = {{fontWeight: 'bold', color: '#FFFFFF', fontSize: 40, marginBottom: 60, textAlign: 'center'}}>Welcome to Food Formula!</Text>
-                <Camera style={styles.camera} type={type}>
+                <Camera style={styles.camera} type={type}
+                    ref={(ref) =>{ camera = ref}}
+                >
                     <TouchableOpacity
                         onPress={() => {
                             setType(
@@ -61,19 +86,22 @@ const Home = () => {
                         }}>
                         <Image style={styles.touchContainer} source={flip} alt={"Flip"}/>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={pictureTaken}>
                         <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect} />
+                        <Text title={'Gallery'} onPress={pickImage} />
+                        <Image source={{ uri: imageUri}} style={{ flex: 1 }}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={handleSignOut}
+                    >
+                        <Text style={styles.buttonText}>Sign out</Text>
                     </TouchableOpacity>
                 </Camera>
                 <StatusBar style="auto" />
             </View>
             <View style={styles.container2}>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={handleSignOut}
-                >
-                    <Text style={styles.buttonText}>Sign out</Text>
-                </TouchableOpacity>
+                
             </View>
         </View>
     );
