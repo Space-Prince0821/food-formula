@@ -5,7 +5,7 @@ import json
 
 # reponseImg = requests.get('https://api.spoonacular.com/food/images/analyze?apiKey=' + apiKey + '&imageUrl=https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_21/2870431/190524-classic-american-cheeseburger-ew-207p.jpg').text
 
-# imageAnalysis = open("recipeImageAnalysisInfo.json", "w")
+# imageAnalysis = open("burgerAnalysis.json", "w")
 # json.dump(json.loads(reponseImg), imageAnalysis)
 # imageAnalysis.close()
 
@@ -13,15 +13,26 @@ import json
 
 # responseRecipeInfo = requests.get('https://api.spoonacular.com/recipes/' + str(firstRecipeId)  + '/information?apiKey=' + apiKey)
 
-# recipeInfo = open("recipeInfo.json", "w")
+# recipeInfo = open("burgerInfo.json", "w")
 # json.dump(responseRecipeInfo.json(), recipeInfo)
 # recipeInfo.close()
 
 #################################################
 # Test
 
-f = open('recipeInfo.json')
+# f = open('recipeInfo.json')
+
+# data = json.load(f)
+
+# for a in data['analyzedInstructions']:
+# 	for s in a['steps']:
+# 		print(s['number'], s['step'])
+
+f = open('burgerAnalysis.json')
 
 data = json.load(f)
 
-print(data['extendedIngredients'])
+print(data['recipes'])
+
+for t in data['recipes']:
+	print(t['title'])
