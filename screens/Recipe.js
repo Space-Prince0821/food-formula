@@ -1,9 +1,9 @@
 import { TouchableOpacity, SafeAreaView, ScrollView, FlatList, Image, StyleSheet, Text, View, Button } from 'react-native';
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { palette } from '../assets/Colors.js';
 import recipeAnalysis from '../assets/placeholders/burgerAnalysis.json';
 import recipeInfo from '../assets/placeholders/burgerInfo.json';
-import { palette } from '../assets/Colors.js';
 
 const apiKey = 'd39928a7b31048459f53673e3e5b3c91';
 const imageUrl = 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_21/2870431/190524-classic-american-cheeseburger-ew-207p.jpg';
@@ -27,7 +27,7 @@ export default function Recipe() {
 
   //stores similar recipes
   const [similarRecipes, setSimilarRecipes] = useState([]);
-  const listSimilarRecipes = similarRecipes.map((i) => 
+  const listSimilarRecipes = similarRecipes.slice(1).map((i) => 
     <TouchableOpacity style={styles.similarRecipesContainer} key={i.title}>
       <Text style={styles.similarRecipes} key={i.title}>{i.title}</Text>
     </TouchableOpacity>
@@ -103,8 +103,10 @@ export default function Recipe() {
       <View style={styles.content}>
         <View style={styles.contentContainer}>
           <Text style={styles.subtitle}>Similar Recipes</Text>
-          <View style={{padding: 5}}>
-            {listSimilarRecipes}
+          <View style={styles.nestedScrollContainer}>
+            <ScrollView style={{borderRadius: 10}} nestedScrollEnabled={true}>
+              {listSimilarRecipes}
+            </ScrollView>
           </View>
         </View>
       </View>
@@ -185,16 +187,24 @@ const styles = StyleSheet.create({
     fontWeight: 'normal'
   },
   similarRecipesContainer: {
-    backgroundColor: palette.pink,
-    marginVertical: 10,
-    borderRadius: 10
+    backgroundColor: palette.darkBlue,
+    marginVertical: 0,
+    borderBottomColor: palette.white,
+    borderBottomWidth: 2
   },
   similarRecipes:{
     fontSize: 18,
     color: palette.white,
-    fontWeight: 'normal',
+    fontWeight: 'bold',
     textAlign: 'center',
     margin: 5,
-    padding: 10
+    padding: 15
+  },
+  nestedScrollContainer: {
+    height: 200,
+    borderWidth: 2,
+    borderColor: palette.white,
+    margin: 10,
+    borderRadius: 10
   }
 });
