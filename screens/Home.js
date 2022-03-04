@@ -21,6 +21,9 @@ const Home = () => {
     const onPressHandler = () => {
         navigation.navigate("RecipeScreen")
     }
+    const onPressHandler2 = () => {
+        navigation.navigate("History")
+    }
 
     return(
         <View style={styles.container}>
@@ -34,6 +37,11 @@ const Home = () => {
                     style = {styles.touchContainer}
                     onPress={onPressHandler}>
                     <Text style = {styles.buttonText}>Click to scan dish!</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style = {styles.touchContainer}
+                    onPress={onPressHandler2}>
+                    <Text style = {styles.buttonText}>Scan History</Text>
                 </TouchableOpacity>
                 <StatusBar style="auto" />
             </View>
