@@ -1,5 +1,6 @@
 import Welcome from './screens/Welcome';
 import Home from './screens/Home';
+import History from './screens/History';
 import LoginScreen from './screens/LoginScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -28,6 +29,10 @@ export default function App() {
         <Stack.Screen 
           name="RecipeScreen" 
           component={Recipe} 
+        />
+        <Stack.Screen 
+          name="History" 
+          component={History} 
         />
       </Stack.Navigator>
     </NavigationContainer>
