@@ -2,8 +2,16 @@ import { TouchableOpacity, SafeAreaView, ScrollView, FlatList, Image, StyleSheet
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { palette } from '../assets/Colors.js';
+// placeholder recipe 1 - burger
 import recipeAnalysis from '../assets/placeholders/burgerAnalysis.json';
 import recipeInfo from '../assets/placeholders/burgerInfo.json';
+// placeholder recipe 2 - ribs
+import ribsAnalysis from '../assets/placeholders/ribsAnalysis.json';
+import ribsInfo from '../assets/placeholders/ribsInfo.json';
+// placeholder recipe 3 - chili
+import chiliAnalysis from '../assets/placeholders/chiliAnalysis.json';
+import chiliInfo from '../assets/placeholders/chiliInfo.json';
+import recipeInfoNoSteps from '../assets/placeholders/recipeInfoNoSteps.json'; //display no steps if recipe does not contain instructions
 
 const apiKey = 'd39928a7b31048459f53673e3e5b3c91';
 const imageUrl = 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_21/2870431/190524-classic-american-cheeseburger-ew-207p.jpg';
@@ -28,8 +36,8 @@ export default function Recipe() {
   //stores similar recipes
   const [similarRecipes, setSimilarRecipes] = useState([]);
   const listSimilarRecipes = similarRecipes.slice(1).map((i) => 
-    <TouchableOpacity style={styles.similarRecipesContainer} key={i.title}>
-      <Text style={styles.similarRecipes} key={i.title}>{i.title}</Text>
+    <TouchableOpacity style={styles.similarRecipesContainer} key={i.id}>
+      <Text style={styles.similarRecipes} key={i.id}>{i.title}</Text>
     </TouchableOpacity>
   );
 
@@ -62,12 +70,40 @@ export default function Recipe() {
     });
   }
 
+  const currentRecipe = 2;
+
   const getPlaceholderInfo = () => {
-    setTitle(recipeInfo.title);
-    setImageUrl(recipeInfo.image);
-    setIngredients(recipeInfo.extendedIngredients);
-    setSteps(recipeInfo.analyzedInstructions);
-    setSimilarRecipes(recipeAnalysis.recipes);
+    if (currentRecipe == 0) {
+      setTitle(recipeInfo.title);
+      setImageUrl(recipeInfo.image);
+      setIngredients(recipeInfo.extendedIngredients);
+      if (recipeInfo.analyzedInstructions != '') {
+        setSteps(recipeInfo.analyzedInstructions);
+      } else {
+        setSteps(recipeInfoNoSteps.analyzedInstructions);
+      }
+      setSimilarRecipes(recipeAnalysis.recipes);
+    } else if (currentRecipe == 1) {
+      setTitle(ribsInfo.title);
+      setImageUrl(ribsInfo.image);
+      setIngredients(ribsInfo.extendedIngredients);
+      if (ribsInfo.analyzedInstructions != '') {
+        setSteps(ribsInfo.analyzedInstructions);
+      } else {
+        setSteps(recipeInfoNoSteps.analyzedInstructions);
+      }
+      setSimilarRecipes(ribsAnalysis.recipes);
+    } else if (currentRecipe == 2) {
+      setTitle(chiliInfo.title);
+      setImageUrl(chiliInfo.image);
+      setIngredients(chiliInfo.extendedIngredients);
+      if (chiliInfo.analyzedInstructions != '') {
+        setSteps(chiliInfo.analyzedInstructions);
+      } else {
+        setSteps(recipeInfoNoSteps.analyzedInstructions);
+      }
+      setSimilarRecipes(chiliAnalysis.recipes);
+    }
   }
 
   //Called every when page first rendered and every time page is updated
@@ -125,8 +161,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     marginTop: 20,
-    padding: 20,
-    paddingHorizontal: 35
+    padding: 15,
+    paddingHorizontal: 10,
+    width: '87%'
   },
   title: {
     fontSize: 30,
@@ -143,7 +180,7 @@ const styles = StyleSheet.create({
   },
   recipeImage: {
     flex: 1,
-    width: '100%',
+    width: '97%',
     height: '100%',
     resizeMode: 'contain',
     borderRadius: 10,
@@ -165,7 +202,8 @@ const styles = StyleSheet.create({
     padding: 20
   },
   content: {
-    padding: 5
+    padding: 5,
+    width: '95%'
   },
   ingredients: {
     fontSize: 20,

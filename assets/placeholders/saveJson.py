@@ -3,7 +3,7 @@ import json
 
 def saveJsons(url, foodType):
 
-	apiKey = 'd39928a7b31048459f53673e3e5b3c91'
+	apiKey = '1eed4400787247809896c66ce2868585'
 
 	responseImg = requests.get('https://api.spoonacular.com/food/images/analyze?apiKey=' + apiKey + '&imageUrl=' + imageUrl).text
 
@@ -21,7 +21,7 @@ def saveJsons(url, foodType):
 
 	fid = data['recipes'][0]['id']
 
-	responseRecipeInfo = requests.get('https://api.spoonacular.com/recipes/' + str(firstRecipeId)  + '/information?apiKey=' + apiKey)
+	responseRecipeInfo = requests.get('https://api.spoonacular.com/recipes/' + str(fid)  + '/information?apiKey=' + apiKey)
 
 	recipeInfo = open((foodType + "Info.json"), "w")
 	json.dump(responseRecipeInfo.json(), recipeInfo)
@@ -30,24 +30,42 @@ def saveJsons(url, foodType):
 # burger
 # imageUrl = 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_21/2870431/190524-classic-american-cheeseburger-ew-207p.jpg'
 
-# salad
-imageUrl = 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fnatashaskitchen.com%2Fcaesar-salad-recipe%2F&psig=AOvVaw0cLQ4PluXKWi-nN24a2Qb3&ust=1646356640944000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOCj1sniqPYCFQAAAAAdAAAAABAD'
+# beef ribs
+# imageUrl = 'https://images.food52.com/ZLbEpdkM0LbKcwAZUCXbdxTja8k=/2016x1344/140a706e-f1ff-4ff4-b0a4-9f3fbc5e5258--2014-0923_coffee-crusted-barbecue-ribs-012.jpg'
 
-saveJsons(imageUrl, 'salad')
+# saveJsons(imageUrl, 'ribs')
+
+# chili
+# imageUrl = 'https://www.cookingclassy.com/wp-content/uploads/2021/02/turkey-chili-33.jpg'
+
+# saveJsons(imageUrl, 'chili')
+
+# french toast
+imageUrl = 'https://howtofeedaloon.com/wp-content/uploads/2020/06/gryo-instagram.jpg'
+
+saveJsons(imageUrl, 'gyro')
 
 #################################################
 # Test
 
-# f = open('recipeInfo.json')
+# f = open('burgerInfo.json')
 
 # data = json.load(f)
+
+# print(data['analyzedInstructions'])
+
+# f = open('recipeInfoNoSteps.json')
+
+# data = json.load(f)
+
+# print(data['analyzedInstructions'][0]['steps'])
 
 # for a in data['analyzedInstructions']:
 # 	for s in a['steps']:
 # 		print(s['number'], s['step'])
 
-# f = open('burgerAnalysis.json')
+# f = open('ribsAnalysis.json')
 
 # data = json.load(f)
 
-# print(data['recipes'][0]['id'])
+# print(data['recipes'])
