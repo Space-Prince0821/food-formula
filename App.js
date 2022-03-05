@@ -1,36 +1,34 @@
-import Welcome from './screens/Welcome';
-import Home from './screens/Home';
-import LoginScreen from './screens/LoginScreen';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import Home from './screens/Home';
+import Welcome from './screens/Welcome';
+import LoginScreen from './screens/LoginScreen';
 import Recipe from './screens/Recipe';
+import History from './screens/History';
+import Pizza from './screens/Pizza';
 
-const Stack = createNativeStackNavigator();
 
-export default function App() {
+import {StyleSheet, Text, View, Image} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import InfoButton from './screens/InfoButton';
+import DrawerNavigator  from "./navigation/DrawerNavigator";
+
+
+function LogoTitle() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen 
-          options={{headerShown: false}} 
-          name="Welcome" 
-          component={Welcome} 
-        />
-        <Stack.Screen 
-          name="Home"
-          options={{headerShown: false}}
-          component={Home} 
-        />
-        <Stack.Screen 
-          name="LoginScreen" 
-          component={LoginScreen} 
-        />
-        <Stack.Screen 
-          name="RecipeScreen" 
-          component={Recipe} 
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-    //<Navigator />
+    <Image
+      style={{ width: 50, height: 50 }}
+      source={require('./assets/logo_white.png')}
+    />
   );
-};
+}
+
+function App() {
+    return(
+      <NavigationContainer>
+        <DrawerNavigator/>
+      </NavigationContainer>
+    )
+}
+export default App;
