@@ -32,19 +32,6 @@ export default function CameraScreen() {
         return <Text>Access to camera denied</Text>;
     }
 
-    const getPicInfo = (x) => {
-        fetch(
-            'https://api.spoonacular.com/food/images/analyze?apiKey=4b70e356c2ad48e58244c333fd2693b5&imageUrl=' + x
-        )
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data)
-        })
-        .catch(() => {
-            console.log('error')
-        });
-    }
-
     const pictureTaken = async () => { 
         let data = await this.camera.takePictureAsync(null);
         console.log(data.uri);
@@ -75,20 +62,6 @@ export default function CameraScreen() {
             });
 
             getURL(reference);
-            /*await getDownloadURL(ref).then((x) => {
-                console.log(x);
-                //.catch((err) => {console.log(err)})
-                /*fetch(
-                    'https://api.spoonacular.com/food/images/analyze?apiKey=4b70e356c2ad48e58244c333fd2693b5&imageUrl=' + x
-                )
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data)
-                })
-                .catch(() => {
-                    console.log('error')
-                });
-            }*/
         };
     };
 
@@ -100,7 +73,8 @@ export default function CameraScreen() {
             )
             .then((response) => response.json())
             .then((data) => {
-                console.log(data)
+                console.log(data);
+                navigation.navigate("RecipeScreen");
             })
             .catch(() => {
                 console.log('error')
