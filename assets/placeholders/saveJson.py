@@ -40,10 +40,10 @@ def saveJsons(url, foodType):
 
 # saveJsons(imageUrl, 'chili')
 
-# french toast
-imageUrl = 'https://howtofeedaloon.com/wp-content/uploads/2020/06/gryo-instagram.jpg'
+# fruit salad
+imageUrl = 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/pasta-salad-horizontal-jpg-1522265695.jpg'
 
-saveJsons(imageUrl, 'gyro')
+saveJsons(imageUrl, 'fruitSalad')
 
 #################################################
 # Test

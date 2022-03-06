@@ -11,6 +11,9 @@ import ribsInfo from '../assets/placeholders/ribsInfo.json';
 // placeholder recipe 3 - chili
 import chiliAnalysis from '../assets/placeholders/chiliAnalysis.json';
 import chiliInfo from '../assets/placeholders/chiliInfo.json';
+// placeholder recipe 4 - fruit salad
+import fruitSaladAnalysis from '../assets/placeholders/fruitSaladAnalysis.json';
+import fruitSaladInfo from '../assets/placeholders/fruitSaladInfo.json';
 import recipeInfoNoSteps from '../assets/placeholders/recipeInfoNoSteps.json'; //display no steps if recipe does not contain instructions
 
 const apiKey = 'd39928a7b31048459f53673e3e5b3c91';
@@ -70,7 +73,7 @@ export default function Recipe() {
     });
   }
 
-  const currentRecipe = 2;
+  const currentRecipe = 0;
 
   const getPlaceholderInfo = () => {
     if (currentRecipe == 0) {
@@ -103,6 +106,16 @@ export default function Recipe() {
         setSteps(recipeInfoNoSteps.analyzedInstructions);
       }
       setSimilarRecipes(chiliAnalysis.recipes);
+    } else if (currentRecipe == 3) {
+      setTitle(fruitSaladInfo.title);
+      setImageUrl(fruitSaladInfo.image);
+      setIngredients(fruitSaladInfo.extendedIngredients);
+      if (fruitSaladInfo.analyzedInstructions != '') {
+        setSteps(fruitSaladInfo.analyzedInstructions);
+      } else {
+        setSteps(recipeInfoNoSteps.analyzedInstructions);
+      }
+      setSimilarRecipes(fruitSaladAnalysis.recipes);
     }
   }
 
