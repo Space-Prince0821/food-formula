@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpaci
 import React, { useEffect, useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import app from '../firebase'
+import app from '../components/firebase';
 
 const LoginScreen = () => {
   const app = app;

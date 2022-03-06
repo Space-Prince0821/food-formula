@@ -1,12 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect} from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Alert } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import { Camera } from "expo-camera";
-import { AutoFocus, CameraType } from "expo-camera/build/Camera.types";
 import flip from '../assets/flip.jpg';
 import * as ImagePicker from 'expo-image-picker';
+import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import uuid from "uuid";
+//import * as firebase from "firebase";
 
 export default function CameraScreen() {
     const navigation = useNavigation();
@@ -30,12 +32,23 @@ export default function CameraScreen() {
         return <Text>Access to camera denied</Text>;
     }
 
-    const pictureTaken = async () => {
-        if (camera) {
-            const data = await this.camera.takePictureAsync(null);
-            console.log(data.uri);
-            setImageUri(data.uri);
-        }
+    const getPicInfo = (x) => {
+        fetch(
+            'https://api.spoonacular.com/food/images/analyze?apiKey=4b70e356c2ad48e58244c333fd2693b5&imageUrl=' + x
+        )
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data)
+        })
+        .catch(() => {
+            console.log('error')
+        });
+    }
+
+    const pictureTaken = async () => { 
+        let data = await this.camera.takePictureAsync(null);
+        console.log(data.uri);
+        setImageUri(data.uri);
     };
 
     const pickImage = async () => {
@@ -46,41 +59,86 @@ export default function CameraScreen() {
           quality: 1,
         });
 
-        console.log(result);
-
         if (!result.cancelled) {
-          setImageUri(result.uri);
-        }
+            setImageUri(result.uri);
+            console.log(result.uri);
+            const storage = getStorage();
+            const filename = (imageUri).substring(imageUri.lastIndexOf('/') + 1);
+            const reference = ref(storage, filename);
+
+            const img = await fetch(result.uri);
+            const bytes = await img.blob();
+
+            //Issue over here
+            await uploadBytes(reference, bytes).then(() => {
+                console.log("Uploaded successfully!");
+            });
+
+            getURL(reference);
+            /*await getDownloadURL(ref).then((x) => {
+                console.log(x);
+                //.catch((err) => {console.log(err)})
+                /*fetch(
+                    'https://api.spoonacular.com/food/images/analyze?apiKey=4b70e356c2ad48e58244c333fd2693b5&imageUrl=' + x
+                )
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data)
+                })
+                .catch(() => {
+                    console.log('error')
+                });
+            }*/
+        };
     };
 
-  return (
-    <View >
-      <Camera style={styles.camera} 
-        type={type}
-        ref={(ref) => {camera = ref}}
-        >
-            <View style={styles.buttons}>
-                <TouchableOpacity
-                    onPress={() => {
-                        setType(
-                            type === Camera.Constants.Type.back
-                                ? Camera.Constants.Type.front
-                                : Camera.Constants.Type.back
-                        )
-                    }}>
-                    <Image style={styles.touchContainer} source={flip} alt={"Flip"}/>
-                </TouchableOpacity>
+    const getURL = async (reference) => {
+        await getDownloadURL(reference).then((x) => {
+            console.log(x);
+            fetch(
+                'https://api.spoonacular.com/food/images/analyze?apiKey=4b70e356c2ad48e58244c333fd2693b5&imageUrl=' + x
+            )
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data)
+            })
+            .catch(() => {
+                console.log('error')
+            });
+        });
+    };
 
-                <TouchableOpacity onPress={pictureTaken}>
-                    <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect} />
-                    <Text title={'Gallery'} onPress={pickImage} />
-                    <Image source={{ uri: imageUri}} style={{ flex: 1 }}/>
-                </TouchableOpacity>
-            </View>
-        </Camera>
-        <StatusBar style="auto" />
-    </View>
-  )
+
+    return (
+        <View >
+        <Camera style={styles.camera} 
+            type={type}
+            ref={(ref) => {camera = ref}}
+            >
+                <View style={styles.buttons}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setType(
+                                type === Camera.Constants.Type.back
+                                    ? Camera.Constants.Type.front
+                                    : Camera.Constants.Type.back
+                            )
+                        }}>
+                        <Image style={styles.touchContainer} source={flip} alt={"Flip"}/>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={pictureTaken}>
+                        <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect} />
+                        <Text title={'Gallery'} onPress={pickImage} />
+                        <TouchableOpacity onPress={pickImage}>
+                            <Image source={{ uri: imageUri}} style={{ flex: 0.7}}/>
+                        </TouchableOpacity>
+                    </TouchableOpacity>
+                </View>
+            </Camera>
+            <StatusBar style="auto" />
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
