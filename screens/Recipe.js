@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { TouchableOpacity, SafeAreaView, ScrollView, FlatList, Image, StyleSheet, Text, View, Button } from 'react-native';
 import React from 'react';
 import { useState, useEffect } from 'react';
@@ -111,10 +112,36 @@ export default function Recipe() {
         </View>
       </View>
     </ScrollView>
+=======
+import { StyleSheet, Text, View, Button } from 'react-native';
+import React from 'react';
+import { useState } from 'react';
+
+export default function Recipe() {
+  const getFoodInfo = () => {
+    fetch(
+        'https://api.spoonacular.com/food/images/analyze?apiKey=4b70e356c2ad48e58244c333fd2693b5&imageUrl=https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_21/2870431/190524-classic-american-cheeseburger-ew-207p.jpg'
+    )
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data)
+    })
+    .catch(() => {
+        console.log('error')
+    });
+  }
+
+  return (
+    <View>
+      <Text>Recipe testing</Text>
+      <Button title="Click" onPress={getFoodInfo}></Button>
+    </View>
+>>>>>>> 819530da4894cf139910023efcac20da451e88d4
   )
 }
 
 const styles = StyleSheet.create({
+<<<<<<< HEAD
   container: {
     flex: 1,
     height: '100%',
@@ -207,4 +234,7 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 10
   }
+=======
+
+>>>>>>> 819530da4894cf139910023efcac20da451e88d4
 });

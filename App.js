@@ -20,6 +20,7 @@ function LogoHeader() {
   );
 }
 
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
