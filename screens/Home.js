@@ -1,9 +1,13 @@
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
-import react from "react";
+import React, { useState, useEffect} from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { StatusBar } from 'expo-status-bar';
+import { Camera } from "expo-camera";
+import { AutoFocus, CameraType } from "expo-camera/build/Camera.types";
+import flip from '../assets/flip.jpg';
+import * as ImagePicker from 'expo-image-picker';
 
 const Home = () => {
     const auth = getAuth();
@@ -18,9 +22,9 @@ const Home = () => {
             .catch(error =>  alert(error.message))
     };
 
-    const onPressHandler = () => {
-        navigation.navigate("RecipeScreen")
-    }
+    const onPressHandler2 = () => {
+        navigation.navigate("CameraScreen");
+    };
 
     return(
         <View style={styles.container}>
@@ -32,7 +36,7 @@ const Home = () => {
                 <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect} />
                 <TouchableOpacity
                     style = {styles.touchContainer}
-                    onPress={onPressHandler}>
+                    onPress={onPressHandler2}>
                     <Text style = {styles.buttonText}>Click to scan dish!</Text>
                 </TouchableOpacity>
                 <StatusBar style="auto" />
@@ -45,6 +49,7 @@ const Home = () => {
                     <Text style={styles.buttonText}>Sign out</Text>
                 </TouchableOpacity>
             </View>
+            <StatusBar style="auto" />
         </View>
     );
 };
@@ -52,7 +57,6 @@ const Home = () => {
 const styles = StyleSheet.create({
     container0: {
         marginTop: 90,
-        //borderWidth: 2,
     },
     container: {
         flex: 1,
@@ -80,7 +84,6 @@ const styles = StyleSheet.create({
     },
     container2: {
         marginTop: 50,
-        //borderWidth: 2,
     },
     cameraSelect: {
         width: 200,

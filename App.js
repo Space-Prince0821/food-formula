@@ -3,7 +3,9 @@ import Home from './screens/Home';
 import LoginScreen from './screens/LoginScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Recipe from './screens/Recipe';
+import CameraScreen from './screens/CameraScreen';
+import FoodAPI from './components/FoodAPI';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -26,8 +28,8 @@ export default function App() {
           component={LoginScreen} 
         />
         <Stack.Screen 
-          name="RecipeScreen" 
-          component={Recipe} 
+          name="CameraScreen" 
+          component={CameraScreen} 
         />
       </Stack.Navigator>
     </NavigationContainer>
