@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { TouchableOpacity, SafeAreaView, ScrollView, FlatList, Image, StyleSheet, Text, View, Button } from 'react-native';
 import React from 'react';
 import { useState, useEffect } from 'react';
@@ -9,13 +8,20 @@ import recipeInfo from '../assets/placeholders/burgerInfo.json';
 const apiKey = 'd39928a7b31048459f53673e3e5b3c91';
 const imageUrl = 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_21/2870431/190524-classic-american-cheeseburger-ew-207p.jpg';
 
-export default function Recipe() {
+export default Recipe = ({ route }) => {
 
   const [title, setTitle] = useState("");
   const [imageUrl, setImageUrl] = useState("https://via.placeholder.com/150");
 
   //stores and maps ingredients
   const [ingredients, setIngredients] = useState([]);
+  const data = route.params.paramKey;
+  const image = route.params.imageURL;
+  const calories = data.nutrition.calories.confidenceRange95Percent.max;
+  const carbs = data.nutrition.carbs.confidenceRange95Percent.max;
+  const fat = data.nutrition.fat.confidenceRange95Percent.max;
+  const protein = data.nutrition.protein.confidenceRange95Percent.max;
+  const simRecipes = data.recipes;
   const listIngredients = ingredients.map((i) => <Text style={styles.ingredients} key={i.original}>{i.original}</Text>);
 
   //stores and maps steps
@@ -28,7 +34,7 @@ export default function Recipe() {
 
   //stores similar recipes
   const [similarRecipes, setSimilarRecipes] = useState([]);
-  const listSimilarRecipes = similarRecipes.slice(1).map((i) => 
+  const listSimilarRecipes = simRecipes.map((i) => 
     <TouchableOpacity style={styles.similarRecipesContainer} key={i.title}>
       <Text style={styles.similarRecipes} key={i.title}>{i.title}</Text>
     </TouchableOpacity>
@@ -64,7 +70,7 @@ export default function Recipe() {
   }
 
   const getPlaceholderInfo = () => {
-    setTitle(recipeInfo.title);
+    setTitle(data.category.name);
     setImageUrl(recipeInfo.image);
     setIngredients(recipeInfo.extendedIngredients);
     setSteps(recipeInfo.analyzedInstructions);
@@ -83,24 +89,35 @@ export default function Recipe() {
         <Text style={styles.title}>{title}</Text>
       </View>
       <View style={styles.imageContainer}>
-        <Image style={styles.recipeImage} source={{uri: imageUrl}} alt={"Recipe Image"}/>
+        <Image style={styles.recipeImage} source={{uri: image}} alt={"Recipe Image"}/>
       </View>
       <View style={styles.content}>
         <View style={styles.contentContainer}>
-          <Text style={styles.subtitle}>Ingredients</Text>
-          <View style={{padding: 5}}>
-            {listIngredients}
+          <Text style={styles.subtitle}>Nutrition</Text>
+          <View style={{padding: 15, width: 340, alignItems: 'center'}}>
+            <Text style={{color: 'white', fontSize: 20}}>
+              {calories} Calories
+            </Text>
+            <Text style={{color: 'white', fontSize: 20}}>
+              {carbs} grams of Carbs
+            </Text>
+            <Text style={{color: 'white', fontSize: 20}}>
+              {fat} grams of Fat
+            </Text>
+            <Text style={{color: 'white', fontSize: 20}}>
+              {protein} grams of Protein
+            </Text>
           </View>
         </View>
       </View>
-      <View style={styles.content}>
+      {/*<View style={styles.content}>
         <View style={styles.contentContainer}>
           <Text style={styles.subtitle}>Steps</Text>
           <View style={{padding: 5}}>
             {listSteps}
           </View>
         </View>
-      </View>
+  </View>*/}
       <View style={styles.content}>
         <View style={styles.contentContainer}>
           <Text style={styles.subtitle}>Similar Recipes</Text>
@@ -112,36 +129,10 @@ export default function Recipe() {
         </View>
       </View>
     </ScrollView>
-=======
-import { StyleSheet, Text, View, Button } from 'react-native';
-import React from 'react';
-import { useState } from 'react';
-
-export default function Recipe() {
-  const getFoodInfo = () => {
-    fetch(
-        'https://api.spoonacular.com/food/images/analyze?apiKey=4b70e356c2ad48e58244c333fd2693b5&imageUrl=https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_21/2870431/190524-classic-american-cheeseburger-ew-207p.jpg'
-    )
-    .then((response) => response.json())
-    .then((data) => {
-        console.log(data)
-    })
-    .catch(() => {
-        console.log('error')
-    });
-  }
-
-  return (
-    <View>
-      <Text>Recipe testing</Text>
-      <Button title="Click" onPress={getFoodInfo}></Button>
-    </View>
->>>>>>> 819530da4894cf139910023efcac20da451e88d4
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-<<<<<<< HEAD
   container: {
     flex: 1,
     height: '100%',
@@ -172,7 +163,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    resizeMode: 'contain',
+    //resizeMode: 'contain',
     borderRadius: 10,
     borderWidth: 5,
     borderColor: palette.purple
@@ -217,7 +208,7 @@ const styles = StyleSheet.create({
     backgroundColor: palette.darkBlue,
     marginVertical: 0,
     borderBottomColor: palette.white,
-    borderBottomWidth: 2
+    borderBottomWidth: 3,
   },
   similarRecipes:{
     fontSize: 18,
@@ -228,13 +219,10 @@ const styles = StyleSheet.create({
     padding: 15
   },
   nestedScrollContainer: {
-    height: 200,
+    height: 300,
     borderWidth: 2,
     borderColor: palette.white,
     margin: 10,
     borderRadius: 10
   }
-=======
-
->>>>>>> 819530da4894cf139910023efcac20da451e88d4
 });

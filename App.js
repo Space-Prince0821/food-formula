@@ -20,7 +20,6 @@ function LogoHeader() {
   );
 }
 
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -58,6 +57,5 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-    //<Navigator />
   );
 };

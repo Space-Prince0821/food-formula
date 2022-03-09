@@ -73,8 +73,8 @@ export default function CameraScreen() {
             )
             .then((response) => response.json())
             .then((data) => {
+                navigation.navigate("RecipeScreen", { paramKey: data, imageURL: x });
                 console.log(data);
-                navigation.navigate("RecipeScreen");
             })
             .catch(() => {
                 console.log('error')
