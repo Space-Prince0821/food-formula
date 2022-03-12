@@ -4,17 +4,18 @@ import logo from '../assets/logo_white.png';
 import { palette } from '../assets/Colors.js';
 
 let recipeArr = new Array;
+var deepApiKey = 'ec0761f3-34ec-4785-aa18-e8ae8df71377';
 
 function compare(a, b) {
-    const distA = a.res.output.distance;
-    const distB = b.res.output.distance;
-    let comparison = 0;
-    if (distA > distB) {
-        comparison = 1;
-    } else if (distA < distB) {
-        comparison = -1;
-    }
-    return comparison;
+  const distA = a.res.output.distance;
+  const distB = b.res.output.distance;
+  let comparison = 0;
+  if (distA > distB) {
+      comparison = 1;
+  } else if (distA < distB) {
+      comparison = -1;
+  }
+  return comparison;
 }
 
 function fetchDistances(data, targetUrl) {
@@ -39,7 +40,7 @@ function fetchDistances(data, targetUrl) {
           'Accept-Encoding': 'gzip, deflate',
           'Accept': '*/*',
           'Connection': 'keep-alive',
-          'api-key': 'a91c00d9-753b-4df4-b201-21278d21eecf',
+          'api-key': deepApiKey,
           'Content-Length': '245',
           'Content-Type': 'application/x-www-form-urlencoded'
         },
@@ -119,13 +120,17 @@ export default function Loading() {
     const [tempTitle, setTempTitle] = useState();
 
     const checkRecipe = () => {
-        if (recipeArr.length === 0) {
-            setTimeout(checkRecipe, 100);
-        } else {
-            recipeArr.sort(compare);
-            setTempTitle(recipeArr[0].recipe.title);
-            alert(tempTitle);
+      if (recipeArr.length === 0) {
+        setTimeout(checkRecipe, 500);
+      } else {
+        try {
+          recipeArr.sort(compare);
+        } catch (error) {
+          console.log('images similarity api error');
         }
+        setTempTitle(recipeArr[0].recipe.title);
+        alert(tempTitle);
+      }
     }
 
     const a = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Hotdog_-_Evan_Swigart.jpg";
