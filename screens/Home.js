@@ -19,7 +19,7 @@ const Home = () => {
     };
 
     const onPressHandler = () => {
-        navigation.navigate("RecipeScreen")
+        navigation.navigate("LoadingScreen")
     }
 
     return(

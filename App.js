@@ -4,6 +4,7 @@ import LoginScreen from './screens/LoginScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Recipe from './screens/Recipe';
+import Loading from './screens/Loading';
 import { palette } from './assets/Colors.js';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import logo from './assets/logo_white.png';
@@ -37,6 +38,17 @@ export default function App() {
         <Stack.Screen 
           name="LoginScreen" 
           component={LoginScreen} 
+        />
+        <Stack.Screen 
+          name="LoadingScreen" 
+          component={Loading}
+          options={{
+            headerTitle: (props) => <LogoHeader {...props} />,
+            headerStyle: {
+              backgroundColor: palette.darkPink
+            },
+            headerTintColor: palette.white,
+          }}
         />
         <Stack.Screen 
           name="RecipeScreen" 
