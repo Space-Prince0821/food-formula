@@ -2,9 +2,10 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import { useState, useEffect } from 'react';
 import logo from '../assets/logo_white.png';
 import { palette } from '../assets/Colors.js';
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
 let recipeArr = new Array;
-var deepApiKey = 'ec0761f3-34ec-4785-aa18-e8ae8df71377';
+var deepApiKey = 'a91c00d9-753b-4df4-b201-21278d21eecf';
 
 function compare(a, b) {
   const distA = a.res.output.distance;
@@ -18,7 +19,11 @@ function compare(a, b) {
   return comparison;
 }
 
-function fetchDistances(data, targetUrl) {
+export default function Loading() {
+
+  const [tempArr, setTempArr] = useState([]);
+
+  function fetchDistances(data, targetUrl) {
     let tempUrls = data.map(x => x.image);
     let arr = new Array;
     let fetches = [];
@@ -58,95 +63,118 @@ function fetchDistances(data, targetUrl) {
       );
     }
     Promise.all(fetches).then(function() {
-      recipeArr = arr;
+      setTempArr(arr);
     })
 };
 
-function getRecipe(url) {
-    const raw = JSON.stringify({
-      "user_app_id": {
-            "user_id": "mpaul97",
-            "app_id": "19810bedef094ba093c4e41b57776ed1"
-        },
-      "inputs": [
-        {
-          "data": {
-            "image": {
-              "url": url
+  function getRecipe(url) {
+      const raw = JSON.stringify({
+        "user_app_id": {
+              "user_id": "mpaul97",
+              "app_id": "19810bedef094ba093c4e41b57776ed1"
+          },
+        "inputs": [
+          {
+            "data": {
+              "image": {
+                "url": url
+              }
             }
           }
-        }
-      ]
-    });
-  
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Key b2456b5779b340c6a6aed1ab51424c30'
-      },
-      body: raw
-    };
-  
-    var ingredients = [];
-  
-    fetch("https://api.clarifai.com/v2/models/bd367be194cf45149e75f01d59f77ba7/outputs", requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        var obj = JSON.parse(result, null, 2).outputs[0].data;
-        var obj2 = obj.concepts;
-        //get clarfai ingredients
-        for (var i = 0; i < obj2.length; i++) {
-          if (i < 10) {
-            ingredients[i] = obj2[i].name;
+        ]
+      });
+    
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Key b2456b5779b340c6a6aed1ab51424c30'
+        },
+        body: raw
+      };
+    
+      var ingredients = [];
+    
+      fetch("https://api.clarifai.com/v2/models/bd367be194cf45149e75f01d59f77ba7/outputs", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          var obj = JSON.parse(result, null, 2).outputs[0].data;
+          var obj2 = obj.concepts;
+          //get clarfai ingredients
+          for (var i = 0; i < obj2.length; i++) {
+            if (i < 10) {
+              ingredients[i] = obj2[i].name;
+            }
           }
-        }
-        var strIngredients = ingredients.toString();
-        var spoonKey = 'd39928a7b31048459f53673e3e5b3c91';
-        //pass ingredients as string to spoonacular, findByIngredients
-        var numberOfRecipes = 5;
-        fetch("https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + spoonKey + "&ingredients=" + strIngredients + "&ranking=2&number=" + numberOfRecipes)
-          .then(response1 => response1.json())
-          .then((data) => {
-            fetchDistances(data, url);
+          var strIngredients = ingredients.toString();
+          var spoonKey = 'd39928a7b31048459f53673e3e5b3c91';
+          //pass ingredients as string to spoonacular, findByIngredients
+          var numberOfRecipes = 2;
+          fetch("https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + spoonKey + "&ingredients=" + strIngredients + "&ranking=2&number=" + numberOfRecipes)
+            .then(response1 => response1.json())
+            .then((data) => {
+              fetchDistances(data, url);
+            })
+            .catch(error => console.log('spoonacular error', error));
           })
-          .catch(error => console.log('spoonacular error', error));
-        })
-        .catch(error => console.log('clarfai error', error));
-}
+          .catch(error => console.log('clarfai error', error));
+  }
 
-export default function Loading() {
+  const navigation = useNavigation();
 
-    const [tempTitle, setTempTitle] = useState();
+  const [tempTitle, setTempTitle] = useState();
+  // const [recipe, setRecipe] = useState();
+  // let recipe;
 
-    const checkRecipe = () => {
-      if (recipeArr.length === 0) {
-        setTimeout(checkRecipe, 500);
-      } else {
-        try {
-          recipeArr.sort(compare);
-        } catch (error) {
-          console.log('images similarity api error');
+  const checkRecipe = () => {
+    if (recipeArr.length === 0) {
+      setTimeout(checkRecipe, 1000);
+    } else {
+      try {
+        recipeArr.sort(compare);
+        if (typeof recipeArr[0] !== 'undefined') {
+          let recipe = recipeArr[0].recipe;
+          navigation.navigate("RecipeScreen", {recipe: recipe});
         }
-        setTempTitle(recipeArr[0].recipe.title);
-        alert(tempTitle);
+      } catch (error) {
+        console.log('images similarity api error');
+        if (typeof recipeArr[0] !== 'undefined') {
+          let recipe = recipeArr[0].recipe;
+          setTimeout(() => {
+            navigation.navigate("RecipeScreen", {recipe: recipe});
+          }, 1000)
+        }
       }
     }
+  }
 
-    const a = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Hotdog_-_Evan_Swigart.jpg";
+  const onLoad = () => {
+    if (typeof recipe !== 'undefined') {
+      navigation.navigate("RecipeScreen", {recipe: recipe});
+    }
+  }
 
-    useEffect(() => {
-        getRecipe(a);
-        checkRecipe();
-    });
+  const a = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Hotdog_-_Evan_Swigart.jpg";
 
-    return (
-        <View style={styles.container}>
-            <Image style={styles.logo} source={logo} alt={"Logo"}/>
-            <Text style={styles.analyzingText}>Analyzing...</Text>
-            <Text>{tempTitle}</Text>
-        </View>
-    )
+  useEffect(() => {
+      getRecipe(a);
+      const test = () => {
+        if (tempArr.length !== 0) {
+          if (typeof tempArr[0].recipe !== 'undefined') {
+            console.log(tempArr[0].recipe.title);
+            navigation.navigate("RecipeScreen", {recipe: tempArr[0].recipe});
+          }
+        }
+      };
+      test();
+  });
+
+  return (
+      <View style={styles.container}>
+          <Image style={styles.logo} source={logo} alt={"Logo"}/>
+          <Text style={styles.analyzingText}>Analyzing...</Text>
+      </View>
+  )
 }
 
 const styles = StyleSheet.create({

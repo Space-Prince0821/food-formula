@@ -2,6 +2,7 @@ import { TouchableOpacity, SafeAreaView, ScrollView, FlatList, Image, StyleSheet
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { palette } from '../assets/Colors.js';
+import { useNavigationParam } from '@react-navigation/native';
 // placeholder recipe 1 - burger
 import recipeAnalysis from '../assets/placeholders/burgerAnalysis.json';
 import recipeInfo from '../assets/placeholders/burgerInfo.json';
@@ -16,10 +17,124 @@ import fruitSaladAnalysis from '../assets/placeholders/fruitSaladAnalysis.json';
 import fruitSaladInfo from '../assets/placeholders/fruitSaladInfo.json';
 import recipeInfoNoSteps from '../assets/placeholders/recipeInfoNoSteps.json'; //display no steps if recipe does not contain instructions
 
+var deepApiKey = 'a91c00d9-753b-4df4-b201-21278d21eecf';
+
+function compare(a, b) {
+  const distA = a.res.output.distance;
+  const distB = b.res.output.distance;
+  let comparison = 0;
+  if (distA > distB) {
+      comparison = 1;
+  } else if (distA < distB) {
+      comparison = -1;
+  }
+  return comparison;
+}
+
 const apiKey = 'd39928a7b31048459f53673e3e5b3c91';
 const imageUrl = 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_21/2870431/190524-classic-american-cheeseburger-ew-207p.jpg';
 
-export default function Recipe() {
+export default function Recipe({ route, navigation }) {
+
+  const recipe = route.params;
+  const [recipeArr, setRecipeArr] = useState([]);
+
+  function fetchDistances(data, targetUrl) {
+    let tempUrls = data.map(x => x.image);
+    let arr = new Array;
+    let fetches = [];
+    for (var i = 0; i < tempUrls.length; i++) {
+  
+      let recipe = data[i];
+  
+      const raw = {
+        'image1': targetUrl,
+        'image2': tempUrls[i]
+      };
+  
+      let urlParameters = Object.entries(raw).map(e => e.join('=')).join('&');
+  
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'User-Agent': 'python-requests/2.26.0',
+          'Accept-Encoding': 'gzip, deflate',
+          'Accept': '*/*',
+          'Connection': 'keep-alive',
+          'api-key': deepApiKey,
+          'Content-Length': '245',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        // body: "image1=https%3A%2F%2Fwww.foodiecrush.com%2Fwp-content%2Fuploads%2F2020%2F05%2FPenne-Marinara-Sauce-foodiecrush.com-004.jpg&image2=https%3A%2F%2Fwww.foodiecrush.com%2Fwp-content%2Fuploads%2F2020%2F05%2FPenne-Marinara-Sauce-foodiecrush.com-004.jpg"
+        body: urlParameters
+      };
+  
+      fetches.push(
+        fetch("https://api.deepai.org/api/image-similarity", requestOptions)
+          .then(res => res.json())
+          .then(res => {
+            arr.push({ res, recipe });
+          })
+          .catch (error => console.log(error))
+      );
+    }
+    Promise.all(fetches).then(function() {
+      setRecipeArr(arr);
+    })
+  };
+  
+  function getRecipe(url) {
+      const raw = JSON.stringify({
+        "user_app_id": {
+              "user_id": "mpaul97",
+              "app_id": "19810bedef094ba093c4e41b57776ed1"
+          },
+        "inputs": [
+          {
+            "data": {
+              "image": {
+                "url": url
+              }
+            }
+          }
+        ]
+      });
+    
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Key b2456b5779b340c6a6aed1ab51424c30'
+        },
+        body: raw
+      };
+    
+      var ingredients = [];
+    
+      fetch("https://api.clarifai.com/v2/models/bd367be194cf45149e75f01d59f77ba7/outputs", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          var obj = JSON.parse(result, null, 2).outputs[0].data;
+          var obj2 = obj.concepts;
+          //get clarfai ingredients
+          for (var i = 0; i < obj2.length; i++) {
+            if (i < 10) {
+              ingredients[i] = obj2[i].name;
+            }
+          }
+          var strIngredients = ingredients.toString();
+          var spoonKey = '1eed4400787247809896c66ce2868585';
+          //pass ingredients as string to spoonacular, findByIngredients
+          var numberOfRecipes = 2;
+          fetch("https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + spoonKey + "&ingredients=" + strIngredients + "&ranking=2&number=" + numberOfRecipes)
+            .then(response1 => response1.json())
+            .then((data) => {
+              fetchDistances(data, url);
+            })
+            .catch(error => console.log('spoonacular error', error));
+          })
+          .catch(error => console.log('clarfai error', error));
+  }
 
   const [title, setTitle] = useState("");
   const [imageUrl, setImageUrl] = useState("https://via.placeholder.com/150");
@@ -119,11 +234,20 @@ export default function Recipe() {
     }
   }
 
+  const a = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Hotdog_-_Evan_Swigart.jpg";
+
   //Called every when page first rendered and every time page is updated
   useEffect(() => {
     // getFoodInfo();
-    getPlaceholderInfo();
-  })
+    // getPlaceholderInfo();
+    getRecipe(a);
+    const test = () => {
+      if (recipeArr.length !== 0) {
+        console.log(recipeArr[0].recipe.title);
+      }
+    };
+    test();
+  }, [recipeArr]);
 
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center', alignItems: 'center'}} style={styles.container}>
