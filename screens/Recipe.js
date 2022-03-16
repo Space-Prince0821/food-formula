@@ -17,8 +17,6 @@ import fruitSaladAnalysis from '../assets/placeholders/fruitSaladAnalysis.json';
 import fruitSaladInfo from '../assets/placeholders/fruitSaladInfo.json';
 import recipeInfoNoSteps from '../assets/placeholders/recipeInfoNoSteps.json'; //display no steps if recipe does not contain instructions
 
-var deepApiKey = 'a91c00d9-753b-4df4-b201-21278d21eecf';
-
 function compare(a, b) {
   const distA = a.res.output.distance;
   const distB = b.res.output.distance;
@@ -31,13 +29,16 @@ function compare(a, b) {
   return comparison;
 }
 
-const apiKey = 'd39928a7b31048459f53673e3e5b3c91';
+var deepApiKey = 'a91c00d9-753b-4df4-b201-21278d21eecf';
+const spoonKey = "1eed4400787247809896c66ce2868585";
 const imageUrl = 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_21/2870431/190524-classic-american-cheeseburger-ew-207p.jpg';
 
 export default function Recipe({ route, navigation }) {
 
+  let recipeArr = [];
+
   const recipe = route.params;
-  const [recipeArr, setRecipeArr] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   function fetchDistances(data, targetUrl) {
     let tempUrls = data.map(x => x.image);
@@ -79,7 +80,7 @@ export default function Recipe({ route, navigation }) {
       );
     }
     Promise.all(fetches).then(function() {
-      setRecipeArr(arr);
+      recipeArr = arr;
     })
   };
   
@@ -123,7 +124,6 @@ export default function Recipe({ route, navigation }) {
             }
           }
           var strIngredients = ingredients.toString();
-          var spoonKey = '1eed4400787247809896c66ce2868585';
           //pass ingredients as string to spoonacular, findByIngredients
           var numberOfRecipes = 2;
           fetch("https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + spoonKey + "&ingredients=" + strIngredients + "&ranking=2&number=" + numberOfRecipes)
@@ -161,13 +161,13 @@ export default function Recipe({ route, navigation }) {
 
   const getFoodInfo = () => {
     fetch(
-        'https://api.spoonacular.com/food/images/analyze?apiKey=' + apiKey + '&imageUrl=' + imageUrl
+        'https://api.spoonacular.com/food/images/analyze?apiKey=' + spoonKey + '&imageUrl=' + imageUrl
     )
     .then((response) => response.json())
     .then((data) => {
       const id = data.recipes[0].id;
       fetch (
-        'https://api.spoonacular.com/recipes/' + id  + '/information?apiKey=' + apiKey
+        'https://api.spoonacular.com/recipes/' + id  + '/information?apiKey=' + spoonKey
       )
       .then((response) => response.json())
       .then((data) => {
@@ -186,6 +186,22 @@ export default function Recipe({ route, navigation }) {
         setImageUrl(recipeInfo.image);
         setIngredients(recipeInfo.extendedIngredients);
     });
+  }
+
+  const displayRecipe = (id) => {
+    fetch (
+      'https://api.spoonacular.com/recipes/' + id  + '/information?apiKey=' + spoonKey
+    )
+    .then((response) => response.json())
+    .then((data) => {
+      setTitle(data.title);
+      setImageUrl(data.image);
+      setIngredients(data.extendedIngredients);
+    })
+    .catch(() => {
+      //alert("recipe not found!");
+      setTitle("Recipe")
+    })
   }
 
   const currentRecipe = 0;
@@ -243,11 +259,17 @@ export default function Recipe({ route, navigation }) {
     getRecipe(a);
     const test = () => {
       if (recipeArr.length !== 0) {
-        console.log(recipeArr[0].recipe.title);
+        let tempRecipe = recipeArr[0].recipe;
+        displayRecipe(tempRecipe.id);
       }
     };
-    test();
-  }, [recipeArr]);
+    const timer = setTimeout(() => {
+      test();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center', alignItems: 'center'}} style={styles.container}>
