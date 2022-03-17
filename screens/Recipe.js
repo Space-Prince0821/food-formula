@@ -6,16 +6,7 @@ import { useNavigationParam } from '@react-navigation/native';
 // placeholder recipe 1 - burger
 import recipeAnalysis from '../assets/placeholders/burgerAnalysis.json';
 import recipeInfo from '../assets/placeholders/burgerInfo.json';
-// placeholder recipe 2 - ribs
-import ribsAnalysis from '../assets/placeholders/ribsAnalysis.json';
-import ribsInfo from '../assets/placeholders/ribsInfo.json';
-// placeholder recipe 3 - chili
-import chiliAnalysis from '../assets/placeholders/chiliAnalysis.json';
-import chiliInfo from '../assets/placeholders/chiliInfo.json';
-// placeholder recipe 4 - fruit salad
-import fruitSaladAnalysis from '../assets/placeholders/fruitSaladAnalysis.json';
-import fruitSaladInfo from '../assets/placeholders/fruitSaladInfo.json';
-import recipeInfoNoSteps from '../assets/placeholders/recipeInfoNoSteps.json'; //display no steps if recipe does not contain instructions
+import recipeInfoNoSteps from '../assets/placeholders/recipeInfoNoSteps.json';
 
 function compare(a, b) {
   const distA = a.res.output.distance;
@@ -31,14 +22,12 @@ function compare(a, b) {
 
 var deepApiKey = 'a91c00d9-753b-4df4-b201-21278d21eecf';
 const spoonKey = "1eed4400787247809896c66ce2868585";
-const imageUrl = 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_21/2870431/190524-classic-american-cheeseburger-ew-207p.jpg';
 
-export default function Recipe({ route, navigation }) {
+export default function Recipe() {
 
   let recipeArr = [];
-
-  const recipe = route.params;
-  const [loading, setLoading] = useState(false);
+  var numRecipes_spoon = 10;
+  var numIngredients = 10;
 
   function fetchDistances(data, targetUrl) {
     let tempUrls = data.map(x => x.image);
@@ -119,13 +108,13 @@ export default function Recipe({ route, navigation }) {
           var obj2 = obj.concepts;
           //get clarfai ingredients
           for (var i = 0; i < obj2.length; i++) {
-            if (i < 10) {
+            if (i < numIngredients) {
               ingredients[i] = obj2[i].name;
             }
           }
           var strIngredients = ingredients.toString();
           //pass ingredients as string to spoonacular, findByIngredients
-          var numberOfRecipes = 2;
+          var numberOfRecipes = numRecipes_spoon;
           fetch("https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + spoonKey + "&ingredients=" + strIngredients + "&ranking=2&number=" + numberOfRecipes)
             .then(response1 => response1.json())
             .then((data) => {
@@ -137,7 +126,7 @@ export default function Recipe({ route, navigation }) {
   }
 
   const [title, setTitle] = useState("");
-  const [imageUrl, setImageUrl] = useState("https://via.placeholder.com/150");
+  const [imageUrl, setImageUrl] = useState("");
 
   //stores and maps ingredients
   const [ingredients, setIngredients] = useState([]);
@@ -197,6 +186,13 @@ export default function Recipe({ route, navigation }) {
       setTitle(data.title);
       setImageUrl(data.image);
       setIngredients(data.extendedIngredients);
+      if (data.analyzedInstructions != '') {
+        setSteps(data.analyzedInstructions);
+      } else {
+        setSteps(recipeInfoNoSteps.analyzedInstructions);
+      }
+      let simRecipes = recipeArr.map(x => x.recipe);
+      setSimilarRecipes(simRecipes);
     })
     .catch(() => {
       //alert("recipe not found!");
@@ -204,68 +200,28 @@ export default function Recipe({ route, navigation }) {
     })
   }
 
-  const currentRecipe = 0;
-
-  const getPlaceholderInfo = () => {
-    if (currentRecipe == 0) {
-      setTitle(recipeInfo.title);
-      setImageUrl(recipeInfo.image);
-      setIngredients(recipeInfo.extendedIngredients);
-      if (recipeInfo.analyzedInstructions != '') {
-        setSteps(recipeInfo.analyzedInstructions);
-      } else {
-        setSteps(recipeInfoNoSteps.analyzedInstructions);
-      }
-      setSimilarRecipes(recipeAnalysis.recipes);
-    } else if (currentRecipe == 1) {
-      setTitle(ribsInfo.title);
-      setImageUrl(ribsInfo.image);
-      setIngredients(ribsInfo.extendedIngredients);
-      if (ribsInfo.analyzedInstructions != '') {
-        setSteps(ribsInfo.analyzedInstructions);
-      } else {
-        setSteps(recipeInfoNoSteps.analyzedInstructions);
-      }
-      setSimilarRecipes(ribsAnalysis.recipes);
-    } else if (currentRecipe == 2) {
-      setTitle(chiliInfo.title);
-      setImageUrl(chiliInfo.image);
-      setIngredients(chiliInfo.extendedIngredients);
-      if (chiliInfo.analyzedInstructions != '') {
-        setSteps(chiliInfo.analyzedInstructions);
-      } else {
-        setSteps(recipeInfoNoSteps.analyzedInstructions);
-      }
-      setSimilarRecipes(chiliAnalysis.recipes);
-    } else if (currentRecipe == 3) {
-      setTitle(fruitSaladInfo.title);
-      setImageUrl(fruitSaladInfo.image);
-      setIngredients(fruitSaladInfo.extendedIngredients);
-      if (fruitSaladInfo.analyzedInstructions != '') {
-        setSteps(fruitSaladInfo.analyzedInstructions);
-      } else {
-        setSteps(recipeInfoNoSteps.analyzedInstructions);
-      }
-      setSimilarRecipes(fruitSaladAnalysis.recipes);
-    }
-  }
-
-  const a = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Hotdog_-_Evan_Swigart.jpg";
+  // const a = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Hotdog_-_Evan_Swigart.jpg";
+  const a = "https://i.ibb.co/YXpKLH3/image0.jpg";
 
   //Called every when page first rendered and every time page is updated
   useEffect(() => {
     // getFoodInfo();
     // getPlaceholderInfo();
     getRecipe(a);
-    const test = () => {
+    const setData = () => {
       if (recipeArr.length !== 0) {
+        try {
+          recipeArr.sort(compare);
+        } catch (err) {
+          console.log("deep ai image similarity error", err);
+        }
         let tempRecipe = recipeArr[0].recipe;
         displayRecipe(tempRecipe.id);
       }
     };
     const timer = setTimeout(() => {
-      test();
-    }, 3000);
+      setData();
+    }, 5000);
 
     return () => clearTimeout(timer);
 
