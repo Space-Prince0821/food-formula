@@ -140,10 +140,14 @@ export default function Recipe() {
     </Text>
   ));
 
+  const renderSimilarRecipe = (id) => {
+    displayRecipe(id, true);
+  };
+
   //stores similar recipes
   const [similarRecipes, setSimilarRecipes] = useState([]);
-  const listSimilarRecipes = similarRecipes.slice(1).map((i) => 
-    <TouchableOpacity style={styles.similarRecipesContainer} key={i.id}>
+  const listSimilarRecipes = similarRecipes.filter(x => x.title !== title).map((i) => 
+    <TouchableOpacity onPress={() => renderSimilarRecipe(i.id)} style={styles.similarRecipesContainer} key={i.id}>
       <Text style={styles.similarRecipes} key={i.id}>{i.title}</Text>
     </TouchableOpacity>
   );
@@ -177,7 +181,7 @@ export default function Recipe() {
     });
   }
 
-  const displayRecipe = (id) => {
+  const displayRecipe = (id, isSim) => {
     fetch (
       'https://api.spoonacular.com/recipes/' + id  + '/information?apiKey=' + spoonKey
     )
@@ -191,14 +195,16 @@ export default function Recipe() {
       } else {
         setSteps(recipeInfoNoSteps.analyzedInstructions);
       }
-      let simRecipes = recipeArr.map(x => x.recipe);
-      setSimilarRecipes(simRecipes);
+      if (!isSim) {
+        let simRecipes = recipeArr.map(x => x.recipe);
+        setSimilarRecipes(simRecipes);
+      };
     })
     .catch(() => {
       //alert("recipe not found!");
       setTitle("Recipe")
     })
-  }
+  };
 
   // const a = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Hotdog_-_Evan_Swigart.jpg";
   const a = "https://i.ibb.co/YXpKLH3/image0.jpg";
@@ -216,7 +222,7 @@ export default function Recipe() {
           console.log("deep ai image similarity error", err);
         }
         let tempRecipe = recipeArr[0].recipe;
-        displayRecipe(tempRecipe.id);
+        displayRecipe(tempRecipe.id, false);
       }
     };
     const timer = setTimeout(() => {
