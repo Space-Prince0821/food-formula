@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#ffafcc'
+        backgroundColor: '#005f73'
     },
     inputContainer: {
         width: '80%'
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     buttonText: {
-        color: 'white',
+        color: 'black',
         fontWeight: '700',
         fontSize: 16
     },
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         borderWidth: 2
     },
     buttonOutlineText: {
-        color: '#0782F9',
+        color: 'black',
         fontWeight: '700',
         fontSize: 16
     }

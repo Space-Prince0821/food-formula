@@ -36,6 +36,22 @@ export default function CameraScreen() {
         let data = await this.camera.takePictureAsync(null);
         console.log(data.uri);
         setImageUri(data.uri);
+        const pic = data.uri;
+        const storage = getStorage();
+        const filename = (pic).substring(pic.lastIndexOf('/') + 1);
+        const reference = ref(storage, filename);
+
+        const img = await fetch(data.uri);
+        const bytes = await img.blob();
+
+        //Issue over here
+        await uploadBytesResumable(reference, bytes).then(() => {
+            console.log("Uploaded successfully!");
+        }).catch((error) => {
+            console.log(error.message, "error uploading image");
+        });
+
+        getURL(reference);
     };
 
     const pickImage = async () => {
@@ -49,6 +65,7 @@ export default function CameraScreen() {
         if (!result.cancelled) {
             setImageUri(result.uri);
             console.log(result.uri);
+            
             const storage = getStorage();
             const filename = (imageUri).substring(imageUri.lastIndexOf('/') + 1);
             const reference = ref(storage, filename);
@@ -59,6 +76,8 @@ export default function CameraScreen() {
             //Issue over here
             await uploadBytes(reference, bytes).then(() => {
                 console.log("Uploaded successfully!");
+            }).catch((error) => {
+                console.log(error.message, "error uploading image");
             });
 
             getURL(reference);
@@ -68,17 +87,7 @@ export default function CameraScreen() {
     const getURL = async (reference) => {
         await getDownloadURL(reference).then((x) => {
             console.log(x);
-            fetch(
-                'https://api.spoonacular.com/food/images/analyze?apiKey=4b70e356c2ad48e58244c333fd2693b5&imageUrl=' + x
-            )
-            .then((response) => response.json())
-            .then((data) => {
-                navigation.navigate("RecipeScreen", { paramKey: data, imageURL: x });
-                console.log(data);
-            })
-            .catch(() => {
-                console.log('error')
-            });
+            navigation.navigate("RecipeScreen", { imageURL: x });
         });
     };
 

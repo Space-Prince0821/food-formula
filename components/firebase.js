@@ -5,12 +5,13 @@ import { getStorage, uploadBytes, ref as sRef} from 'firebase/storage';
 
 //Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC_5AN07hU6UwQZUwb6T3LMn_uCk_LlEIM",
-  authDomain: "fir-auth-cef23.firebaseapp.com",
-  projectId: "fir-auth-cef23",
-  storageBucket: "fir-auth-cef23.appspot.com",
-  messagingSenderId: "545310381323",
-  appId: "1:545310381323:web:7940d17237c088c22bbe0e",
+  apiKey: "AIzaSyCaX10_nHBIDiewXLDNJPGj_fBB_Y9shNw",
+  authDomain: "food-formula.firebaseapp.com",
+  projectId: "food-formula",
+  storageBucket: "food-formula.appspot.com",
+  messagingSenderId: "177117132523",
+  appId: "1:177117132523:web:dc030793408bb74b44b0ae",
+  measurementId: "G-G4NGBBV1DX"
 };
 
 const app = initializeApp(firebaseConfig);

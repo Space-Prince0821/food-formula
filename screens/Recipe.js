@@ -2,13 +2,10 @@ import { TouchableOpacity, SafeAreaView, ScrollView, FlatList, Image, StyleSheet
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { palette } from '../assets/Colors.js';
+import { useNavigationParam } from '@react-navigation/native';
+// placeholder recipe 1 - burger
 import recipeAnalysis from '../assets/placeholders/burgerAnalysis.json';
 import recipeInfo from '../assets/placeholders/burgerInfo.json';
-
-const apiKey = 'd39928a7b31048459f53673e3e5b3c91';
-const imageUrl = 'https://media-cldnry.s-nbcnews.com/image/upload/newscms/2019_21/2870431/190524-classic-american-cheeseburger-ew-207p.jpg';
-var deepApiKey = 'a91c00d9-753b-4df4-b201-21278d21eecf';
-const spoonKey = "1eed4400787247809896c66ce2868585";
 
 function compare(a, b) {
   const distA = a.res.output.distance;
@@ -22,7 +19,11 @@ function compare(a, b) {
   return comparison;
 }
 
-export default Recipe = ({ route }) => {
+var deepApiKey = 'a91c00d9-753b-4df4-b201-21278d21eecf';
+const spoonKey = "1eed4400787247809896c66ce2868585";
+
+export default function Recipe({ route }) {
+
   let recipeArr = [];
   var numRecipes_spoon = 10;
   var numIngredients = 10;
@@ -68,59 +69,59 @@ export default Recipe = ({ route }) => {
     }
     Promise.all(fetches).then(function() {
       recipeArr = arr;
-    });
+    })
   };
-
+  
   function getRecipe(url) {
-    const raw = JSON.stringify({
-      "user_app_id": {
-            "user_id": "mpaul97",
-            "app_id": "19810bedef094ba093c4e41b57776ed1"
-        },
-      "inputs": [
-        {
-          "data": {
-            "image": {
-              "url": url
+      const raw = JSON.stringify({
+        "user_app_id": {
+              "user_id": "mpaul97",
+              "app_id": "19810bedef094ba093c4e41b57776ed1"
+          },
+        "inputs": [
+          {
+            "data": {
+              "image": {
+                "url": url
+              }
             }
           }
-        }
-      ]
-    });
-  
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Key b2456b5779b340c6a6aed1ab51424c30'
-      },
-      body: raw
-    };
-  
-    var ingredients = [];
-  
-    fetch("https://api.clarifai.com/v2/models/bd367be194cf45149e75f01d59f77ba7/outputs", requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        var obj = JSON.parse(result, null, 2).outputs[0].data;
-        var obj2 = obj.concepts;
-        //get clarfai ingredients
-        for (var i = 0; i < obj2.length; i++) {
-          if (i < numIngredients) {
-            ingredients[i] = obj2[i].name;
+        ]
+      });
+    
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Key b2456b5779b340c6a6aed1ab51424c30'
+        },
+        body: raw
+      };
+    
+      var ingredients = [];
+    
+      fetch("https://api.clarifai.com/v2/models/bd367be194cf45149e75f01d59f77ba7/outputs", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          var obj = JSON.parse(result, null, 2).outputs[0].data;
+          var obj2 = obj.concepts;
+          //get clarfai ingredients
+          for (var i = 0; i < obj2.length; i++) {
+            if (i < numIngredients) {
+              ingredients[i] = obj2[i].name;
+            }
           }
-        }
-        var strIngredients = ingredients.toString();
-        //pass ingredients as string to spoonacular, findByIngredients
-        var numberOfRecipes = numRecipes_spoon;
-        fetch("https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + spoonKey + "&ingredients=" + strIngredients + "&ranking=2&number=" + numberOfRecipes)
-          .then(response1 => response1.json())
-          .then((data) => {
-            fetchDistances(data, url);
+          var strIngredients = ingredients.toString();
+          //pass ingredients as string to spoonacular, findByIngredients
+          var numberOfRecipes = numRecipes_spoon;
+          fetch("https://api.spoonacular.com/recipes/findByIngredients?apiKey=" + spoonKey + "&ingredients=" + strIngredients + "&ranking=2&number=" + numberOfRecipes)
+            .then(response1 => response1.json())
+            .then((data) => {
+              fetchDistances(data, url);
+            })
+            .catch(error => console.log('spoonacular error', error));
           })
-          .catch(error => console.log('spoonacular error', error));
-        })
-        .catch(error => console.log('clarfai error', error));
+          .catch(error => console.log('clarfai error', error));
   }
 
   const [title, setTitle] = useState("");
@@ -138,10 +139,14 @@ export default Recipe = ({ route }) => {
     </Text>
   ));
 
+  const renderSimilarRecipe = (id) => {
+    displayRecipe(id, true);
+  };
+
   //stores similar recipes
   const [similarRecipes, setSimilarRecipes] = useState([]);
-  const listSimilarRecipes = similarRecipes.slice(1).map((i) => 
-    <TouchableOpacity style={styles.similarRecipesContainer} key={i.id}>
+  const listSimilarRecipes = similarRecipes.filter(x => x.title !== title).map((i) => 
+    <TouchableOpacity onPress={() => renderSimilarRecipe(i.id)} style={styles.similarRecipesContainer} key={i.id}>
       <Text style={styles.similarRecipes} key={i.id}>{i.title}</Text>
     </TouchableOpacity>
   );
@@ -175,7 +180,7 @@ export default Recipe = ({ route }) => {
     });
   }
 
-  const displayRecipe = (id) => {
+  const displayRecipe = (id, isSim) => {
     fetch (
       'https://api.spoonacular.com/recipes/' + id  + '/information?apiKey=' + spoonKey
     )
@@ -189,19 +194,24 @@ export default Recipe = ({ route }) => {
       } else {
         setSteps(recipeInfoNoSteps.analyzedInstructions);
       }
-      let simRecipes = recipeArr.map(x => x.recipe);
-      setSimilarRecipes(simRecipes);
+      if (!isSim) {
+        let simRecipes = recipeArr.map(x => x.recipe);
+        setSimilarRecipes(simRecipes);
+      };
     })
     .catch(() => {
       //alert("recipe not found!");
       setTitle("Recipe")
     })
-  }
+  };
 
+  // const a = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Hotdog_-_Evan_Swigart.jpg";
   const a = route.params.imageURL;
 
   //Called every when page first rendered and every time page is updated
   useEffect(() => {
+    // getFoodInfo();
+    // getPlaceholderInfo();
     getRecipe(a);
     const setData = () => {
       if (recipeArr.length !== 0) {
@@ -211,7 +221,7 @@ export default Recipe = ({ route }) => {
           console.log("deep ai image similarity error", err);
         }
         let tempRecipe = recipeArr[0].recipe;
-        displayRecipe(tempRecipe.id);
+        displayRecipe(tempRecipe.id, false);
       }
     };
     const timer = setTimeout(() => {
@@ -257,17 +267,17 @@ export default Recipe = ({ route }) => {
         </View>
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: '100%',
-    backgroundColor: palette.pink
+    backgroundColor: '#005f73'
   },
   titleContainer: {
-    backgroundColor: palette.darkPink,
+    backgroundColor: 'white',
     borderRadius: 10,
     margin: 10,
     marginTop: 20,
@@ -277,7 +287,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    color: palette.white,
+    color: 'black',
     textAlign: 'center',
     fontWeight: 'bold',
     marginVertical: 10
@@ -299,14 +309,14 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 25,
-    color: palette.white,
+    color: 'black',
     textAlign: 'center',
     fontWeight: 'bold',
     marginVertical: 5,
     textDecorationLine: 'underline'
   },
   contentContainer: {
-    backgroundColor: palette.darkPink,
+    backgroundColor: 'white',
     borderRadius: 10,
     margin: 10,
     padding: 20
@@ -319,19 +329,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 5,
     paddingVertical: 10,
-    color: palette.white
+    color: 'black'
   },
   stepNum: {
     fontSize: 22,
     padding: 5,
     paddingVertical: 10,
-    color: palette.lightBlue,
+    color: 'black',
     fontWeight: 'bold',
     textAlign: 'justify'
   },
   stepInfo:{
     fontSize: 20,
-    color: palette.white,
+    color: 'black',
     fontWeight: 'normal'
   },
   similarRecipesContainer: {
@@ -342,7 +352,7 @@ const styles = StyleSheet.create({
   },
   similarRecipes:{
     fontSize: 18,
-    color: palette.white,
+    color: 'black',
     fontWeight: 'bold',
     textAlign: 'center',
     margin: 5,

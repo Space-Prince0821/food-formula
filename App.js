@@ -50,7 +50,7 @@ export default function App() {
           options={{
             headerTitle: (props) => <LogoHeader {...props} />,
             headerStyle: {
-              backgroundColor: palette.darkPink
+              backgroundColor: '#005f73'
             },
             headerTintColor: palette.white,
           }}
