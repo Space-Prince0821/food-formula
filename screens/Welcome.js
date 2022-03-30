@@ -1,4 +1,3 @@
-import react from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import logo from '../assets/logo_white.png';
 import { StatusBar } from 'expo-status-bar';
@@ -36,13 +35,13 @@ const Welcome = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     height: '100%',
-    backgroundColor: '#ffafcc',
+    backgroundColor: '#005778',
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
     fontSize: 50,
-    color: '#fff',
+    color: '#FC4C02',
     fontWeight: 'bold'
   },
   logo: {
@@ -58,13 +57,13 @@ const styles = StyleSheet.create({
     margin: 20,
     width: 300,
     alignItems: 'center',
-    backgroundColor: "#fff",
+    backgroundColor: "#FC4C02",
     borderRadius: 10
   },
   buttonText: {
     fontSize: 25,
     fontWeight: 'bold',
-    color: "#a2d2ff"
+    color: "#fff"
   }
 });
 

@@ -22,9 +22,9 @@ const Home = () => {
             .catch(error =>  alert(error.message))
     };
 
-    const onPressHandler2 = () => {
-        navigation.navigate("CameraScreen");
-    };
+    // const onPressHandler2 = () => {
+    //     navigation.navigate("CameraScreen");
+    // };
 
     return(
         <View style={styles.container}>
@@ -32,20 +32,24 @@ const Home = () => {
                 <Text style={{fontWeight: 'bold', fontSize: 20}}>Email: {auth.currentUser?.email}</Text>
             </View>
             <View style={styles.container3}>
-                <Text style = {{fontWeight: 'bold', color: '#FFFFFF', fontSize: 40, marginBottom: 60, textAlign: 'center'}}>Welcome to Food Formula!</Text>
+                <Text style = {{fontWeight: 'bold', color: '#FC4C02', fontSize: 40, marginBottom: 60, textAlign: 'center'}}>Welcome to Food Formula!</Text>
                 <Image source={{ uri: 'https://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-8.jpg' }} style={styles.cameraSelect} />
                 <TouchableOpacity
                     style = {styles.touchContainer}
-                    onPress={onPressHandler2}>
+                    onPress={() => navigation.navigate("CameraScreen")}>
                     <Text style = {styles.buttonText}>Click to scan dish!</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style = {styles.touchContainer}
+                    onPress={() => navigation.navigate("History Page")}>
+                    <Text style = {styles.buttonText}>Scan History</Text>
                 </TouchableOpacity>
                 <StatusBar style="auto" />
             </View>
             <View style={styles.container2}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={handleSignOut}
-                >
+                    onPress={handleSignOut}>
                     <Text style={styles.buttonText}>Sign out</Text>
                 </TouchableOpacity>
             </View>
@@ -56,12 +60,12 @@ const Home = () => {
 
 const styles = StyleSheet.create({
     container0: {
-        marginTop: 90,
+        marginTop: 20,
     },
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#ffafcc'
+        backgroundColor: '#005778'
     },
     button: {
         backgroundColor: '#0782F9',
@@ -83,7 +87,7 @@ const styles = StyleSheet.create({
         borderWidth: 2
     },
     container2: {
-        marginTop: 50,
+        marginTop: 5,
     },
     cameraSelect: {
         width: 200,
@@ -98,13 +102,13 @@ const styles = StyleSheet.create({
         margin: 20,
         width: 300,
         alignItems: 'center',
-        backgroundColor: "#fff",
+        backgroundColor: "#FC4C02",
         borderRadius: 150/3
     },
     buttonText: {
       fontSize: 25,
       fontWeight: 'bold',
-      color: "#a2d2ff"
+      color: "#fff"
     },
     returnContainer: {
       padding: 15,
@@ -121,7 +125,7 @@ const styles = StyleSheet.create({
     container3: {
         //borderWidth: 2,
         alignItems: 'center',
-        marginTop: 70
+        marginTop: 30
     }
 });
 

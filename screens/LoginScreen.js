@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#ffafcc'
+        backgroundColor: '#005778'
     },
     inputContainer: {
         width: '80%'
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         marginTop: 40
     },
     button: {
-        backgroundColor: '#0782F9',
+        backgroundColor: '#FC4C02',
         width: '100%',
         padding: 15,
         borderRadius: 10,
@@ -119,11 +119,11 @@ const styles = StyleSheet.create({
     buttonOutline: {
         backgroundColor: 'white',
         marginTop: 15,
-        borderColor: '#0782F9',
+        borderColor: '#FC4C02',
         borderWidth: 2
     },
     buttonOutlineText: {
-        color: '#0782F9',
+        color: '#FC4C02',
         fontWeight: '700',
         fontSize: 16
     }
