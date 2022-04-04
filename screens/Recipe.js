@@ -1,4 +1,4 @@
-import { TouchableOpacity, SafeAreaView, ScrollView, FlatList, Image, StyleSheet, Text, View, Button } from 'react-native';
+import { TouchableOpacity, ScrollView, Image, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { palette } from '../assets/Colors.js';
@@ -6,6 +6,7 @@ import { useNavigationParam } from '@react-navigation/native';
 // placeholder recipe 1 - burger
 import recipeAnalysis from '../assets/placeholders/burgerAnalysis.json';
 import recipeInfo from '../assets/placeholders/burgerInfo.json';
+import LoadEffect from '../components/LoadEffect.js';
 
 function compare(a, b) {
   const distA = a.res.output.distance;
@@ -27,6 +28,8 @@ export default function Recipe({ route }) {
   let recipeArr = [];
   var numRecipes_spoon = 10;
   var numIngredients = 10;
+
+  const [loading, setLoading] = useState(false); // keep's loading state for loading UI
 
   function fetchDistances(data, targetUrl) {
     let tempUrls = data.map(x => x.image);
@@ -212,6 +215,7 @@ export default function Recipe({ route }) {
   useEffect(() => {
     // getFoodInfo();
     // getPlaceholderInfo();
+    setLoading(true);
     getRecipe(a);
     const setData = () => {
       if (recipeArr.length !== 0) {
@@ -226,6 +230,7 @@ export default function Recipe({ route }) {
     };
     const timer = setTimeout(() => {
       setData();
+      setLoading(false);
     }, 5000);
 
     return () => clearTimeout(timer);
@@ -234,6 +239,7 @@ export default function Recipe({ route }) {
 
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center', alignItems: 'center'}} style={styles.container}>
+      {loading ? <LoadEffect/> : null }
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{title}</Text>
       </View>
