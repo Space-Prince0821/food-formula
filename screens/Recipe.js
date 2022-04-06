@@ -29,6 +29,10 @@ export default function Recipe({ route }) {
   var numRecipes_spoon = 10;
   var numIngredients = 10;
 
+  const clarfaiUserId = 'azu12kuyampw';
+  const clarfaiAppId = '0a0463fe83dd477782008bfe418a4e1f';
+  const clarfaiKey = '1631f0d390624615b86054111e14b211';
+
   const [loading, setLoading] = useState(false); // keep's loading state for loading UI
 
   function fetchDistances(data, targetUrl) {
@@ -78,8 +82,8 @@ export default function Recipe({ route }) {
   function getRecipe(url) {
       const raw = JSON.stringify({
         "user_app_id": {
-              "user_id": "mpaul97",
-              "app_id": "19810bedef094ba093c4e41b57776ed1"
+              "user_id": clarfaiUserId,
+              "app_id": clarfaiAppId
           },
         "inputs": [
           {
@@ -96,7 +100,7 @@ export default function Recipe({ route }) {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
-          'Authorization': 'Key b2456b5779b340c6a6aed1ab51424c30'
+          'Authorization': 'Key ' + clarfaiKey
         },
         body: raw
       };
