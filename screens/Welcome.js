@@ -36,7 +36,7 @@ const Welcome = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     height: '100%',
-    backgroundColor: '#ffafcc',
+    backgroundColor: '#005f73',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 25,
     fontWeight: 'bold',
-    color: "#a2d2ff"
+    color: "black"
   }
 });
 

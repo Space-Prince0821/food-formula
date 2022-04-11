@@ -5,28 +5,15 @@ import { getStorage, uploadBytes, ref as sRef} from 'firebase/storage';
 
 //Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC_5AN07hU6UwQZUwb6T3LMn_uCk_LlEIM",
-  authDomain: "fir-auth-cef23.firebaseapp.com",
-  projectId: "fir-auth-cef23",
-  storageBucket: "fir-auth-cef23.appspot.com",
-  messagingSenderId: "545310381323",
-  appId: "1:545310381323:web:7940d17237c088c22bbe0e",
+  apiKey: "AIzaSyBsWupPQqghGBAwODWB-7J5gqSg8M_iuq0",
+  authDomain: "food-formula-2f429.firebaseapp.com",
+  projectId: "food-formula-2f429",
+  storageBucket: "food-formula-2f429.appspot.com",
+  messagingSenderId: "347599315103",
+  appId: "1:347599315103:web:63a6f7bfbfba62867802aa",
+  measurementId: "G-Y4CE2XLET4"
 };
 
 const app = initializeApp(firebaseConfig);
-
-//let file;
-
-//const storage = getStorage();
-//const storageRef = sRef(storage);
-
-//const imageRef = sRef(storage, 'favicon.png');
-
-
-//uploadBytes(imageRef, file).then((snapshot) => {
-//  console.log("Uploaded a file!");
-//});
-
-//uploadBytes();
 
 export default app;
