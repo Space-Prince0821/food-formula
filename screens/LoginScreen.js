@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, PlatformColor } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import app from '../components/firebase';
+import { palette } from '../assets/Colors.js';
 
 const LoginScreen = () => {
   const app = app;
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#005f73'
+        backgroundColor: palette.blue
     },
     inputContainer: {
         width: '80%'

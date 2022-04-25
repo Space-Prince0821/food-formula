@@ -71,7 +71,7 @@ export default function Recipe({ route }) {
           .then(res => {
             arr.push({ res, recipe });
           })
-          .catch (error => console.log(error))
+          .catch (error => alert("Problem Analyzing Dish\n Error Code 3"))
       );
     }
     Promise.all(fetches).then(function() {
@@ -126,9 +126,9 @@ export default function Recipe({ route }) {
             .then((data) => {
               fetchDistances(data, url);
             })
-            .catch(error => console.log('spoonacular error', error));
+            .catch(error => alert("Problem Analyzing Dish\n Error Code 2"));
           })
-          .catch(error => console.log('clarfai error', error));
+          .catch(error => alert("Problem Analyzing Dish\n Error Code 1"));
   }
 
   const [title, setTitle] = useState("");
@@ -158,6 +158,7 @@ export default function Recipe({ route }) {
     </TouchableOpacity>
   );
 
+  // Old function
   const getFoodInfo = () => {
     fetch(
         'https://api.spoonacular.com/food/images/analyze?apiKey=' + spoonKey + '&imageUrl=' + imageUrl
@@ -212,8 +213,8 @@ export default function Recipe({ route }) {
     })
   };
 
-  // const a = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Hotdog_-_Evan_Swigart.jpg";
-  const a = route.params.imageURL;
+  const a = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Hotdog_-_Evan_Swigart.jpg";
+  // const a = route.params.imageURL;
 
   //Called every when page first rendered and every time page is updated
   useEffect(() => {
@@ -284,10 +285,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: '100%',
-    backgroundColor: '#005f73'
+    backgroundColor: palette.blue
   },
   titleContainer: {
-    backgroundColor: 'white',
+    backgroundColor: palette.orange,
     borderRadius: 10,
     margin: 10,
     marginTop: 20,
@@ -297,7 +298,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    color: 'black',
+    color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
     marginVertical: 10
@@ -315,18 +316,18 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     borderRadius: 10,
     borderWidth: 5,
-    borderColor: palette.purple
+    borderColor: palette.orange
   },
   subtitle: {
     fontSize: 25,
-    color: 'black',
+    color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
     marginVertical: 5,
     textDecorationLine: 'underline'
   },
   contentContainer: {
-    backgroundColor: 'white',
+    backgroundColor: palette.orange,
     borderRadius: 10,
     margin: 10,
     padding: 20
@@ -339,30 +340,30 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 5,
     paddingVertical: 10,
-    color: 'black'
+    color: 'white'
   },
   stepNum: {
     fontSize: 22,
     padding: 5,
     paddingVertical: 10,
-    color: 'black',
+    color: 'white',
     fontWeight: 'bold',
     textAlign: 'justify'
   },
   stepInfo:{
     fontSize: 20,
-    color: 'black',
+    color: 'white',
     fontWeight: 'normal'
   },
   similarRecipesContainer: {
-    backgroundColor: palette.darkBlue,
+    backgroundColor: palette.blue,
     marginVertical: 0,
     borderBottomColor: palette.white,
     borderBottomWidth: 2
   },
   similarRecipes:{
     fontSize: 18,
-    color: 'black',
+    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
     margin: 5,

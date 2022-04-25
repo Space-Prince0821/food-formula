@@ -27,22 +27,42 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen 
-          options={{headerShown: false}} 
+          options={{headerShown: false}}
           name="Welcome" 
           component={Welcome} 
         />
         <Stack.Screen 
           name="Home"
-          options={{headerShown: false}}
-          component={Home} 
+          component={Home}
+          options={{
+            headerTitle: (props) => <LogoHeader {...props} />,
+            headerStyle: {
+              backgroundColor: palette.blue
+            },
+            headerTintColor: palette.white,
+          }}
         />
         <Stack.Screen 
           name="LoginScreen" 
-          component={LoginScreen} 
+          component={LoginScreen}
+          options={{
+            headerTitle: (props) => <LogoHeader {...props} />,
+            headerStyle: {
+              backgroundColor: palette.blue
+            },
+            headerTintColor: palette.white,
+          }}
         />
         <Stack.Screen 
           name="CameraScreen" 
-          component={CameraScreen} 
+          component={CameraScreen}
+          options={{
+            headerTitle: (props) => <LogoHeader {...props} />,
+            headerStyle: {
+              backgroundColor: palette.blue
+            },
+            headerTintColor: palette.white,
+          }}
         />
         <Stack.Screen 
           name="RecipeScreen" 
@@ -50,7 +70,7 @@ export default function App() {
           options={{
             headerTitle: (props) => <LogoHeader {...props} />,
             headerStyle: {
-              backgroundColor: '#005f73'
+              backgroundColor: palette.blue
             },
             headerTintColor: palette.white,
           }}
