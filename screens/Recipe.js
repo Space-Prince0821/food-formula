@@ -7,6 +7,7 @@ import { useNavigationParam } from '@react-navigation/native';
 import recipeAnalysis from '../assets/placeholders/burgerAnalysis.json';
 import recipeInfo from '../assets/placeholders/burgerInfo.json';
 import LoadEffect from '../components/LoadEffect.js';
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
 function compare(a, b) {
   const distA = a.res.output.distance;
@@ -24,6 +25,8 @@ var deepApiKey = 'a91c00d9-753b-4df4-b201-21278d21eecf';
 const spoonKey = "d39928a7b31048459f53673e3e5b3c91";
 
 export default function Recipe({ route }) {
+
+  const navigation = useNavigation();
 
   let recipeArr = [];
   var numRecipes_spoon = 10;
@@ -71,7 +74,10 @@ export default function Recipe({ route }) {
           .then(res => {
             arr.push({ res, recipe });
           })
-          .catch (error => alert("Problem Analyzing Dish\n Error Code 3"))
+          .catch (error => {
+            alert("Problem Analyzing Dish\n Error Code D");
+            navigation.navigate("Home");
+          })
       );
     }
     Promise.all(fetches).then(function() {
@@ -126,9 +132,15 @@ export default function Recipe({ route }) {
             .then((data) => {
               fetchDistances(data, url);
             })
-            .catch(error => alert("Problem Analyzing Dish\n Error Code 2"));
+            .catch(error => {
+              alert("Problem Analyzing Dish\n Error Code S");
+              navigation.navigate("Home");
+            });
           })
-          .catch(error => alert("Problem Analyzing Dish\n Error Code 1"));
+          .catch(error => {
+            alert("Problem Analyzing Dish\n Error Code C");
+            navigation.navigate("Home");
+          });
   }
 
   const [title, setTitle] = useState("");
@@ -227,7 +239,8 @@ export default function Recipe({ route }) {
         try {
           recipeArr.sort(compare);
         } catch (err) {
-          console.log("deep ai image similarity error", err);
+          // Ignore error, recipe still displays
+          console.log("deep ai image sorting error", err);
         }
         let tempRecipe = recipeArr[0].recipe;
         displayRecipe(tempRecipe.id, false);
