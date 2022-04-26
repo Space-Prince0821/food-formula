@@ -32,9 +32,9 @@ export default function Recipe({ route }) {
   var numRecipes_spoon = 10;
   var numIngredients = 10;
 
-  const clarfaiUserId = 'azu12kuyampw';
-  const clarfaiAppId = '0a0463fe83dd477782008bfe418a4e1f';
-  const clarfaiKey = '1631f0d390624615b86054111e14b211';
+  const clarfaiUserId = 'mpaul97';
+  const clarfaiAppId = '19810bedef094ba093c4e41b57776ed1';
+  const clarfaiKey = 'b2456b5779b340c6a6aed1ab51424c30';
 
   const [loading, setLoading] = useState(false); // keep's loading state for loading UI
 
