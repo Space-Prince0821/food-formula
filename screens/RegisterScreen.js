@@ -5,10 +5,11 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import app from '../components/firebase';
 import { palette } from '../assets/Colors.js';
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
   const app = app;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const auth = getAuth();
   const navigation = useNavigation();
 
@@ -25,22 +26,17 @@ const LoginScreen = () => {
     return unsubscribe;
   }, []);
 
-  const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredentials) => {
-            const user = userCredentials.user;
-            console.log("Registered with:", user.email);
-        })
-        .catch(error => alert(error.message))
-  };
-
-  const handleLogin = ()  => {
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredentials) => {
-            const user = userCredentials.user;
-            console.log("Logged in with:", user.email);
-        })
-        .catch(error => alert(error.message))
+    const handleSignUp = () => {
+        if (password === confirmPassword) {
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredentials) => {
+                    const user = userCredentials.user;
+                    console.log("Registered with:", user.email);
+                })
+                .catch(error => alert(error.message))
+        } else {
+            alert("Passwords do not match. Please try again.");
+        }
   };
 
   return (
@@ -62,21 +58,22 @@ const LoginScreen = () => {
             style={styles.input}
             secureTextEntry
         />
+        <TextInput 
+            placeholder='Comfirm Password'
+            value={confirmPassword}
+            onChangeText={text => setConfirmPassword(text)}
+            style={styles.input}
+            secureTextEntry
+        />
        </View>
        
        <View style={styles.buttonContainer}>
         <TouchableOpacity
-            onPress={handleLogin}
-            style={styles.button}
-        >
-            <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        {/* <TouchableOpacity
             onPress={handleSignUp}
             style={[styles.button, styles.buttonOutline]}
         >
             <Text style={styles.buttonOutlineText}>Register</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
        </View>
    </KeyboardAvoidingView>
   )
@@ -130,4 +127,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default LoginScreen;
+export default RegisterScreen;

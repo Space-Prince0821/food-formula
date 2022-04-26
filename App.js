@@ -1,6 +1,7 @@
 import Welcome from './screens/Welcome';
 import Home from './screens/Home';
 import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
 import Recipe from './screens/Recipe';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -45,6 +46,17 @@ export default function App() {
         <Stack.Screen 
           name="LoginScreen" 
           component={LoginScreen}
+          options={{
+            headerTitle: (props) => <LogoHeader {...props} />,
+            headerStyle: {
+              backgroundColor: palette.blue
+            },
+            headerTintColor: palette.white,
+          }}
+        />
+        <Stack.Screen 
+          name="RegisterScreen" 
+          component={RegisterScreen}
           options={{
             headerTitle: (props) => <LogoHeader {...props} />,
             headerStyle: {

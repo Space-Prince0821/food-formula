@@ -9,6 +9,7 @@ import { AutoFocus, CameraType } from "expo-camera/build/Camera.types";
 import flip from '../assets/flip.jpg';
 import * as ImagePicker from 'expo-image-picker';
 import { palette } from '../assets/Colors.js';
+import InfoButton from '../components/InfoButton';
 
 const Home = () => {
     const auth = getAuth();
@@ -24,11 +25,17 @@ const Home = () => {
     };
 
     const onPressHandler2 = () => {
+        // navigation.navigate("CameraScreen");
         navigation.navigate("RecipeScreen");
     };
 
+    const onPressHandler3 = () => {
+        navigation.navigate("HistoryScreen");
+    }
+
     return(
         <View style={styles.container}>
+            <InfoButton />
             <View style={styles.container0}>
                 <Text style={{fontWeight: 'bold', fontSize: 22, color: palette.orange, textAlign: 'left'}}>Email: {auth.currentUser?.email}</Text>
             </View>
@@ -41,6 +48,11 @@ const Home = () => {
                     style = {styles.touchContainer}
                     onPress={onPressHandler2}>
                     <Text style = {styles.scanText}>Click to scan dish!</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style = {styles.touchContainer}
+                    onPress={onPressHandler3}>
+                    <Text style = {styles.scanText}>View your past recipes</Text>
                 </TouchableOpacity>
                 <StatusBar style="auto" />
             </View>

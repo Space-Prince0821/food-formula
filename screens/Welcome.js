@@ -13,6 +13,10 @@ const Welcome = ({ navigation }) => {
   const onLoginHandler = () => {
     navigation.navigate('LoginScreen');
   };
+
+  const onRegisterHandler = () => {
+    navigation.navigate('RegisterScreen');
+  };
   
   return (
     <View style={styles.container}>
@@ -24,7 +28,7 @@ const Welcome = ({ navigation }) => {
         <TouchableOpacity style={styles.buttonContainer} onPress={onLoginHandler}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={onRegisterHandler}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonContainer} onPress={onPressHandler}>
