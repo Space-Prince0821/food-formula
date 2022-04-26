@@ -20,6 +20,7 @@ import {
   getDownloadURL,
   uploadBytesResumable,
 } from "firebase/storage";
+import supabase from '../supabase-client';
 import uuid from "uuid";
 //import { firebase } from "@react-native-firebase/auth";
 //import * as firebase from "firebase";
@@ -51,9 +52,12 @@ export default function CameraScreen() {
     if (camera) {
       var data = await camera.takePictureAsync(null);
     }
-    console.log(data.uri);
     setImageUri(data.uri);
     const pic = data.uri;
+    const names = pic.substring(pic.lastIndexOf("/") + 1);
+
+    //await uploadImage(data.uri, names);
+
     const storage = getStorage();
     const filename = pic.substring(pic.lastIndexOf("/") + 1);
     const reference = ref(storage, filename);
@@ -61,7 +65,7 @@ export default function CameraScreen() {
     const img = await fetch(data.uri);
     const bytes = await img.blob();
 
-    await uploadBytesResumable(reference, bytes).then(() => {
+    await uploadBytes(reference, bytes).then(() => {
         console.log("Uploaded successfully!");
     }).catch((error) => {
         console.log(error.message, "error uploading image");
@@ -69,6 +73,7 @@ export default function CameraScreen() {
 
     getURL(reference);
   };
+
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
