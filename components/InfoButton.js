@@ -10,7 +10,7 @@ const  InfoButton = props => {
         <View style={styles.buttonLayout}>
             <View style={styles.container}>
                 <View style={{width: '100%'}}>
-                    <Button style={styles.button} title="i" onPress={() => setModalVisible(true)}/>
+                    <Button style={styles.button} title="i" color={palette.orange} onPress={() => setModalVisible(true)}/>
                     <Modal
                         animationType="slide"
                         transparent={true}
@@ -35,7 +35,8 @@ const  InfoButton = props => {
                                 <Button 
                                     title="Close" 
                                     onPress={() => setModalVisible(!modalVisible)}
-                                    style={styles.button}>
+                                    style={styles.button}
+                                    color={palette.orange}>
                                 </Button>
                             </View>
                         </View>
@@ -48,25 +49,27 @@ const  InfoButton = props => {
 
 const styles = StyleSheet.create({
     container: {
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
         padding: 2,
-        borderWidth: 3,
         borderRadius: 30,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center' 
     },
     button: {
-        backgroundColor: palette.orange
+        backgroundColor: 'white',
+        color: palette.orange,
+        fontWeight: 'bold'
     },
     buttonLayout: {
         marginTop: 60,
         alignItems: 'flex-end',
         marginRight: 20,
-        backgroundColor: palette.orange
+        backgroundColor: 'white',
+        borderRadius: 100
     },
     modalContainer: {
-        height: 550,
+        flex: 1,
         padding: 20,
         borderWidth: 2,
         borderRadius: 60,
@@ -82,10 +85,12 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     closeView: {
-        marginTop: 20,
+        fontSize: 24,
+        marginTop: 30,
         borderWidth: 1,
         backgroundColor: 'white',
-        borderRadius: 20
+        borderRadius: 10,
+        padding: 5
     }
 });
 

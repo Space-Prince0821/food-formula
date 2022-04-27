@@ -3,6 +3,7 @@ import Home from './screens/Home';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import Recipe from './screens/Recipe';
+import HistoryScreen from './screens/HistoryScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CameraScreen from './screens/CameraScreen';
@@ -79,6 +80,17 @@ export default function App() {
         <Stack.Screen 
           name="RecipeScreen" 
           component={Recipe}
+          options={{
+            headerTitle: (props) => <LogoHeader {...props} />,
+            headerStyle: {
+              backgroundColor: palette.blue
+            },
+            headerTintColor: palette.white,
+          }}
+        />
+        <Stack.Screen 
+          name="HistoryScreen" 
+          component={HistoryScreen}
           options={{
             headerTitle: (props) => <LogoHeader {...props} />,
             headerStyle: {

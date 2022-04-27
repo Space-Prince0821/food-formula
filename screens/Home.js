@@ -1,7 +1,7 @@
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
 import React, { useState, useEffect} from "react";
-import { View, Text, Image, StyleSheet, PlatformColor } from "react-native";
+import { View, Text, Image, StyleSheet, PlatformColor, ScrollView } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import { Camera } from "expo-camera";
@@ -34,11 +34,14 @@ const Home = () => {
     }
 
     return(
-        <View style={styles.container}>
-            <InfoButton />
-            <View style={styles.container0}>
-                <Text style={{fontWeight: 'bold', fontSize: 22, color: palette.orange, textAlign: 'left'}}>Email: {auth.currentUser?.email}</Text>
+        <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center', alignItems: 'center'}} style={styles.container}>
+            <View style={styles.header}>
+                <InfoButton style={styles.info}/>
+                <View style={styles.container0}>
+                    <Text style={{fontWeight: 'bold', fontSize: 22, color: 'white'}}>Email: michaelandrewpaul97@csun.edu{auth.currentUser?.email}</Text>
+                </View>
             </View>
+            {/* <View style={styles.divider}></View> */}
             <View style={styles.container3}>
                 <Text style = {styles.welcome}>Welcome to  {"\n"} Food-Formula!</Text>
                 <View style={styles.imageContainer}>
@@ -65,17 +68,27 @@ const Home = () => {
                 </TouchableOpacity>
             </View>
             <StatusBar style="auto" />
-        </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
+    header: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginTop: -50,
+        marginBottom: 40,
+        maxHeight: 40
+    },  
     container0: {
-        marginTop: '10%',
+        marginTop: 68,
+        maxWidth: '70%'
+    },
+    info: {
+        alignSelf: 'flex-start'
     },
     container: {
-        flex: 1,
-        alignItems: 'center',
         backgroundColor: palette.blue
     },
     button: {
@@ -94,12 +107,12 @@ const styles = StyleSheet.create({
         shadowRadius: 10
     },
     container2: {
-        marginTop: 30,
+        marginTop: 0,
     },
     imageContainer: {
         shadowColor: 'white',
         shadowOffset: {width: 0, height: 0},
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.4,
         shadowRadius: 100
     },  
     cameraSelect: {
@@ -146,7 +159,7 @@ const styles = StyleSheet.create({
     },
     container3: {
         alignItems: 'center',
-        marginTop: 40,
+        marginTop: 50,
         width: '70%'
     },
     welcome: {
