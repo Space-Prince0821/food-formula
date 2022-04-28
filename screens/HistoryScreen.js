@@ -1,8 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-// import BLTPic from '/Users/luigiguzmam/gitFolder/food-formula/assets/BLT-Sandwich.png';
-// import PizzaPic from '/Users/luigiguzmam/gitFolder/food-formula/assets/pizzapic.jpeg';
-// import SalsaPic from '/Users/luigiguzmam/gitFolder/food-formula/assets/salsaVerde.jpeg';
+import { palette } from '../assets/Colors.js';
+import { useState, useEffect } from 'react';
 
 import {
     StyleSheet,
@@ -13,41 +12,47 @@ import {
     ScrollView,
 } from 'react-native';
 
+const spoonKey = "d39928a7b31048459f53673e3e5b3c91";
 
-const History = ({ historyNavigation }) => {
-        return (
-            <ScrollView  backgroundColor='#ffafcc'>
-                <View style={styles.container}>
-                <Text style={styles.title}>Scan History</Text>
-                <View>
-                    {/* pizza
-                    <TouchableOpacity style={styles.buttonContainer}>
-                    <Text style={styles.buttonText}>Pizza</Text>
-                    <Image style={styles.foodPic} source={PizzaPic} alt={"pizza picture"}/>
-                    </TouchableOpacity>
-                    
-                    {/* BLT */}
-                    {/* <TouchableOpacity style={styles.buttonContainer}>
-                    <Text style={styles.buttonText}>BLT</Text>
-                    <Image style={styles.foodPic} source={BLTPic} alt={"blt picture"}/>
-                    </TouchableOpacity> */}
+const userRecipeIDs = ['716429'];
 
-                    {/* Salsa */}
-                    {/* <TouchableOpacity style={styles.buttonContainer}>
-                    <Text style={styles.buttonText}>Salsa</Text>
-                    <Image style={styles.foodPic} source={SalsaPic} alt={"salsa picture"}/>
-                    </TouchableOpacity> */}
-                </View>
-            <StatusBar style="auto" />          
-                </View>
-            </ScrollView>
-        );
-    }
+const History = () => {
+
+  const displayRecipe = (id) => {
+    fetch (
+      'https://api.spoonacular.com/recipes/' + id  + '/information?apiKey=' + spoonKey
+    )
+    .then((response) => response.json())
+    .then((data) => {
+      <Text>{data.title}</Text>;
+      // setImageUrl(data.image);
+    })
+    .catch(() => {
+      alert("Recipe not found!");
+    })
+  };
+
+  const getRecipes = userRecipeIDs.map((i) => 
+    <TouchableOpacity style={styles.recipeCard} key={i}>
+      {/* <Text style={styles.recipe} key={i}>{i}</Text> */}
+      {displayRecipe(i)}
+    </TouchableOpacity>
+  );
+
+  return (
+    <ScrollView backgroundColor={palette.blue}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Scan History</Text>
+        {getRecipes}
+      </View>
+    </ScrollView>
+  )
+};
 
 const styles = StyleSheet.create({
   container: {
     height: '100%',
-    backgroundColor: '#ffafcc',
+    backgroundColor: palette.blue,
     alignItems: 'center',
     justifyContent: 'center',
   },
