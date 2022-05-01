@@ -11,39 +11,73 @@ import {
     TouchableOpacity,
     ScrollView,
 } from 'react-native';
+import { WhiteBalance } from 'expo-camera/build/Camera.types';
 
 const spoonKey = "d39928a7b31048459f53673e3e5b3c91";
 
-const userRecipeIDs = ['716429'];
+const userRecipeIds = ['716429'];
+// const userRecipeIds = [];
 
 const History = () => {
 
-  const displayRecipe = (id) => {
-    fetch (
-      'https://api.spoonacular.com/recipes/' + id  + '/information?apiKey=' + spoonKey
-    )
-    .then((response) => response.json())
-    .then((data) => {
-      <Text>{data.title}</Text>;
-      // setImageUrl(data.image);
-    })
-    .catch(() => {
-      alert("Recipe not found!");
+  let recipeArr = new Array;
+
+  const initRecipes = (userRecipeIds) => {
+    let arr = new Array;
+    let fetches = [];
+    for (var i = 0; i < userRecipeIds.length; i++) {
+      var id = userRecipeIds[i];
+      fetches.push(
+        fetch (
+          'https://api.spoonacular.com/recipes/' + id  + '/information?apiKey=' + spoonKey
+        )
+        .then((response) => response.json())
+        .then((data) => {
+          arr.push({title: data.title, image: data.image});
+        })
+        .catch(() => {
+          alert("Recipe not found!");
+        })
+      );
+    };
+    Promise.all(fetches).then(function() {
+      recipeArr = arr;
     })
   };
 
-  const getRecipes = userRecipeIDs.map((i) => 
+  const [recipes, setRecipes] = useState([]);
+
+  useEffect(() => {
+
+    initRecipes(userRecipeIds);
+
+    const setData = () => {
+      if (recipeArr.length !== 0) {
+        setRecipes(recipeArr);
+      }
+    };
+    const timer = setTimeout(() => {
+      setData();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+
+  }, []);
+
+  const getRecipes = recipes.map((i) => 
     <TouchableOpacity style={styles.recipeCard} key={i}>
-      {/* <Text style={styles.recipe} key={i}>{i}</Text> */}
-      {displayRecipe(i)}
+      <Text style={styles.cardText}>{i.title}</Text>
+      <Image style={styles.image} source={{uri: i.image}} alt={"Recipe: "}/>
     </TouchableOpacity>
   );
 
   return (
-    <ScrollView backgroundColor={palette.blue}>
+    <ScrollView backgroundColor={palette.orange}>
       <View style={styles.container}>
-        <Text style={styles.title}>Scan History</Text>
-        {getRecipes}
+        <View style={styles.header}>
+          <Text style={styles.title}>Scan History</Text>
+        </View>
+        {userRecipeIds.length !== 0 ? getRecipes : <Text style={styles.noRecipeText}>No recipes scanned.</Text>}
       </View>
     </ScrollView>
   )
@@ -52,35 +86,49 @@ const History = () => {
 const styles = StyleSheet.create({
   container: {
     height: '100%',
-    backgroundColor: palette.blue,
+    backgroundColor: palette.orange,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
+  header: {
+    width: '100%',
+    borderBottomColor: 'white',
+    borderBottomWidth: 4
+  },  
   title: {
     fontSize: 50,
     color: '#fff',
-    fontWeight: 'bold'
-  },
-  foodPic: {
-    marginTop: 10,
-    marginBottom: 0,
-    width: 340,
-    height: 200,
-    borderRadius: 50/3,
-  },
-  buttonContainer: {
-    paddingTop: 10,
-    marginBottom: 0,
-    marginTop: 10,
-    width: 340,
-    alignItems: 'center',
-    backgroundColor: "#fff",
-    borderRadius: 50/3,
-  },
-  buttonText: {
-    fontSize: 25,
     fontWeight: 'bold',
-    color: "#a2d2ff"
+    backgroundColor: palette.blue,
+    width: '100%',
+    textAlign: 'center',
+    padding: 20
+  },
+  recipeCard: {
+    backgroundColor: palette.blue,
+    padding: 30,
+    margin: 20,
+    borderRadius: 10,
+    borderColor: 'white',
+    borderWidth: 2
+  },
+  cardText: {
+    color: 'white',
+    fontSize: 30,
+    textAlign: 'center'
+  },
+  image: {
+    marginTop: 30,
+    marginBottom: 0,
+    width: 300,
+    height: 200,
+    borderRadius: 10
+  },
+  noRecipeText: {
+    marginTop: 200,
+    color: 'white',
+    fontSize: 30,
+    padding: 15
   }
 });
 
