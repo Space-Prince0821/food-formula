@@ -2,6 +2,7 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { palette } from '../assets/Colors.js';
 import { useState, useEffect } from 'react';
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
 import {
     StyleSheet,
@@ -15,10 +16,12 @@ import { WhiteBalance } from 'expo-camera/build/Camera.types';
 
 const spoonKey = "d39928a7b31048459f53673e3e5b3c91";
 
-const userRecipeIds = ['716429'];
+const userRecipeIds = ['716429', '73420'];
 // const userRecipeIds = [];
 
 const History = () => {
+
+  const navigation = useNavigation();
 
   let recipeArr = new Array;
 
@@ -33,7 +36,7 @@ const History = () => {
         )
         .then((response) => response.json())
         .then((data) => {
-          arr.push({title: data.title, image: data.image});
+          arr.push({title: data.title, image: data.image, id: id});
         })
         .catch(() => {
           alert("Recipe not found!");
@@ -65,7 +68,16 @@ const History = () => {
   }, []);
 
   const getRecipes = recipes.map((i) => 
-    <TouchableOpacity style={styles.recipeCard} key={i}>
+    <TouchableOpacity 
+        style={styles.recipeCard} 
+        key={i.id}
+        onPress={() => {
+          navigation.navigate('RecipeScreen', {
+            recipeId: i.id,
+            fromHistory: true
+          })
+        }}
+    >
       <Text style={styles.cardText}>{i.title}</Text>
       <Image style={styles.image} source={{uri: i.image}} alt={"Recipe: "}/>
     </TouchableOpacity>

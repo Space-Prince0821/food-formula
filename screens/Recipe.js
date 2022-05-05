@@ -26,6 +26,8 @@ const spoonKey = "d39928a7b31048459f53673e3e5b3c91";
 
 export default function Recipe({ route }) {
 
+  const { recipeId, fromHistory } = route.params;
+
   const navigation = useNavigation();
 
   let recipeArr = [];
