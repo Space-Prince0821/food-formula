@@ -25,8 +25,8 @@ const Home = () => {
     };
 
     const onPressHandler2 = () => {
-        // navigation.navigate("CameraScreen");
-        navigation.navigate("RecipeScreen");
+        navigation.navigate("CameraScreen");
+        // navigation.navigate("RecipeScreen");
     };
 
     const onPressHandler3 = () => {

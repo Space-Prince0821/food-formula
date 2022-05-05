@@ -16,7 +16,7 @@ import { WhiteBalance } from 'expo-camera/build/Camera.types';
 
 const spoonKey = "d39928a7b31048459f53673e3e5b3c91";
 
-const userRecipeIds = ['716429', '73420'];
+const userRecipeIds = ['716429'];
 // const userRecipeIds = [];
 
 const History = () => {

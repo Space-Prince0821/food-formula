@@ -232,20 +232,22 @@ export default function Recipe({ route }) {
 
   //Called every when page first rendered and every time page is updated
   useEffect(() => {
-    // getFoodInfo();
-    // getPlaceholderInfo();
     setLoading(true);
     getRecipe(a);
     const setData = () => {
-      if (recipeArr.length !== 0) {
-        try {
-          recipeArr.sort(compare);
-        } catch (err) {
-          // Ignore error, recipe still displays
-          console.log("deep ai image sorting error", err);
+      if (!fromHistory) {
+        if (recipeArr.length !== 0) {
+          try {
+            recipeArr.sort(compare);
+          } catch (err) {
+            // Ignore error, recipe still displays
+            console.log("deep ai image sorting error", err);
+          }
+          let tempRecipe = recipeArr[0].recipe;
+          displayRecipe(tempRecipe.id, true);
         }
-        let tempRecipe = recipeArr[0].recipe;
-        displayRecipe(tempRecipe.id, false);
+      } else {
+        displayRecipe(recipeId, false);
       }
     };
     const timer = setTimeout(() => {
