@@ -5,10 +5,9 @@ import Recipe from './screens/Recipe';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CameraScreen from './screens/CameraScreen';
-import FoodAPI from './components/FoodAPI';
 import { palette } from './assets/Colors.js';
 import { Image } from "react-native";
-import logo from './assets/logo_white.png';
+import React from 'react';
 
 function LogoHeader() {
   return (

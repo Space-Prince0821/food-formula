@@ -1,13 +1,9 @@
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
-import React, { useState, useEffect} from "react";
+import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { StatusBar } from 'expo-status-bar';
-import { Camera } from "expo-camera";
-import { AutoFocus, CameraType } from "expo-camera/build/Camera.types";
-import flip from '../assets/flip.jpg';
-import * as ImagePicker from 'expo-image-picker';
 
 const Home = () => {
     const auth = getAuth();

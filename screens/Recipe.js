@@ -2,9 +2,6 @@ import { TouchableOpacity, ScrollView, Image, StyleSheet, Text, View } from 'rea
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { palette } from '../assets/Colors.js';
-import { useNavigationParam } from '@react-navigation/native';
-// placeholder recipe 1 - burger
-import recipeAnalysis from '../assets/placeholders/burgerAnalysis.json';
 import recipeInfo from '../assets/placeholders/burgerInfo.json';
 import LoadEffect from '../components/LoadEffect.js';
 

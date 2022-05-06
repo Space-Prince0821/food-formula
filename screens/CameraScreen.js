@@ -1,17 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
   Text,
   Image,
-  StyleSheet,
-  Alert,
+  StyleSheet
 } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Camera } from "expo-camera";
-import flip from "../assets/flip.jpg";
 import * as ImagePicker from "expo-image-picker";
 import {
   getStorage,
@@ -20,9 +18,6 @@ import {
   getDownloadURL,
   uploadBytesResumable,
 } from "firebase/storage";
-import uuid from "uuid";
-//import { firebase } from "@react-native-firebase/auth";
-//import * as firebase from "firebase";
 
 export default function CameraScreen() {
   const navigation = useNavigation();
