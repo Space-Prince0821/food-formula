@@ -21,7 +21,7 @@ function compare(a, b) {
 }
 
 var deepApiKey = 'a91c00d9-753b-4df4-b201-21278d21eecf';
-const spoonKey = "d39928a7b31048459f53673e3e5b3c91";
+const spoonKey = "ce6b7b4636b14006bab57bda6f64e555";
 
 export default function Recipe({ route }) {
 
@@ -31,7 +31,7 @@ export default function Recipe({ route }) {
 
   const clarfaiUserId = 'azu12kuyampw';
   const clarfaiAppId = '0a0463fe83dd477782008bfe418a4e1f';
-  const clarfaiKey = '1631f0d390624615b86054111e14b211';
+  const clarfaiKey = 'd6e2299340fc4f5caabfcadbab64bd63';
 
   const [loading, setLoading] = useState(false); // keep's loading state for loading UI
 

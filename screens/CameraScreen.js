@@ -6,7 +6,7 @@ import {
   Text,
   Image,
   StyleSheet,
-  Alert,
+
 } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { StatusBar } from "expo-status-bar";
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     borderRadius: 150 / 3,
   },
   camera: {
-    width: 414,
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
     height: "100%",
@@ -175,10 +175,11 @@ const styles = StyleSheet.create({
     borderRadius: 150 / 3,
   },
   buttons: {
-    width: 410,
-    height: 140,
+    flex: 1,
+    justifyContent: "flex-end",
+    bottom: 0,
+    marginBottom: 30,
     padding: 5,
-    alignItems: "flex-end",
-    justifyContent: "space-between",
+    position: 'absolute',
   },
 });

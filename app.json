@@ -1,9 +1,9 @@
 {
   "expo": {
     "name": "food-formula",
+    "description": "Recipe generator",
     "slug": "food-formula",
     "version": "1.0.0",
-    "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -17,13 +17,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "formula.food.com"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "formula.food.com"
     },
     "web": {
       "favicon": "./assets/favicon.png"

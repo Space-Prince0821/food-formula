@@ -42,7 +42,8 @@ export default function App() {
         />
         <Stack.Screen 
           name="CameraScreen" 
-          component={CameraScreen} 
+          component={CameraScreen}
+          options={{orientation: 'all'}}
         />
         <Stack.Screen 
           name="RecipeScreen" 

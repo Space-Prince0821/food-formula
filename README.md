@@ -1,5 +1,7 @@
 # food-formula
-App allows users to scan dishes that they'd like the recipe for. It provides you with the ingredients and steps you need to take in order to successfully recreate the dish.
+App allows users to scan dishes in order to get the recipe or closest recipe. It provides you with the ingredients and steps you need to take in order to successfully recreate the dish. 
+
+(4/6/22) Don't have a dish in mind? Scan your fridge, food-formula will put ingredients together and give you several recipes.
 
 We'll be using **Expo** to make it easy to test the app as you code.
 
