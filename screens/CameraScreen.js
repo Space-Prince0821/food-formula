@@ -10,6 +10,7 @@ import {
 import { TouchableOpacity } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Camera } from "expo-camera";
+import flip from "../assets/flip.jpg";
 import * as ImagePicker from "expo-image-picker";
 import {
   getStorage,
