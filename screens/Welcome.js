@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import logo from '../assets/logo_white.png';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Welcome = ({ navigation }) => {
   const onPressHandler = () => {

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import app from '../components/firebase';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 const LoginScreen = () => {
   const app = app;

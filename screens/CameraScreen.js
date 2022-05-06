@@ -24,6 +24,7 @@ import supabase from '../supabase-client';
 import uuid from "uuid";
 //import { firebase } from "@react-native-firebase/auth";
 //import * as firebase from "firebase";
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default function CameraScreen() {
   const navigation = useNavigation();

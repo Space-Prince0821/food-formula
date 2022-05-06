@@ -8,6 +8,8 @@ import { Camera } from "expo-camera";
 import { AutoFocus, CameraType } from "expo-camera/build/Camera.types";
 import flip from '../assets/flip.jpg';
 import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 const Home = () => {
     const auth = getAuth();

@@ -7,6 +7,8 @@ import { useNavigationParam } from '@react-navigation/native';
 import recipeAnalysis from '../assets/placeholders/burgerAnalysis.json';
 import recipeInfo from '../assets/placeholders/burgerInfo.json';
 import LoadEffect from '../components/LoadEffect.js';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 function compare(a, b) {
   const distA = a.res.output.distance;
