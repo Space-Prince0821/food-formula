@@ -23,6 +23,7 @@ import {
 import uuid from "uuid";
 //import { firebase } from "@react-native-firebase/auth";
 //import * as firebase from "firebase";
+import { supabase } from "../supabase-client";
 
 export default function CameraScreen() {
   const navigation = useNavigation();
@@ -51,23 +52,20 @@ export default function CameraScreen() {
     if (camera) {
       var data = await camera.takePictureAsync(null);
     }
-    console.log(data.uri);
     setImageUri(data.uri);
     const pic = data.uri;
-    const storage = getStorage();
-    const filename = pic.substring(pic.lastIndexOf("/") + 1);
-    const reference = ref(storage, filename);
+    const names = pic.substring(pic.lastIndexOf("/") + 1);
 
-    const img = await fetch(data.uri);
-    const bytes = await img.blob();
+    let { error: uploadError } = await supabase.storage.from('imgae-uploads').upload(names, data);
 
-    await uploadBytesResumable(reference, bytes).then(() => {
-        console.log("Uploaded successfully!");
-    }).catch((error) => {
-        console.log(error.message, "error uploading image");
-    });
+    const { publicURL, error } = supabase
+    .storage
+    .from('imgae-uploads')
+    .getPublicUrl(names);
 
-    getURL(reference);
+    console.log(publicURL);
+
+    navigation.navigate("RecipeScreen", { imageURL: publicURL });
   };
 
   const pickImage = async () => {

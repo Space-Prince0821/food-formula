@@ -9,6 +9,7 @@ import FoodAPI from './components/FoodAPI';
 import { palette } from './assets/Colors.js';
 import { Image } from "react-native";
 import logo from './assets/logo_white.png';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function LogoHeader() {
   return (
