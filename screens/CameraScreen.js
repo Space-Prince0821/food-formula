@@ -20,11 +20,7 @@ import {
   getDownloadURL,
   uploadBytesResumable,
 } from "firebase/storage";
-import supabase from '../supabase-client';
-import uuid from "uuid";
-//import { firebase } from "@react-native-firebase/auth";
-//import * as firebase from "firebase";
-import AsyncStorage from '@react-native-community/async-storage';
+import { supabase } from "../supabase-client";
 
 export default function CameraScreen() {
   const navigation = useNavigation();
@@ -57,23 +53,30 @@ export default function CameraScreen() {
     const pic = data.uri;
     const names = pic.substring(pic.lastIndexOf("/") + 1);
 
-    //await uploadImage(data.uri, names);
+    let { error: uploadError } = await supabase.storage.from('imgae-uploads').upload(names, data);
 
-    const storage = getStorage();
-    const filename = pic.substring(pic.lastIndexOf("/") + 1);
-    const reference = ref(storage, filename);
+    const { publicURL, error } = supabase
+    .storage
+    .from('imgae-uploads')
+    .getPublicUrl(names);
 
-    const img = await fetch(data.uri);
-    const bytes = await img.blob();
+    console.log(publicURL);
 
-    await uploadBytes(reference, bytes).then(() => {
-        console.log("Uploaded successfully!");
-    }).catch((error) => {
-        console.log(error.message, "error uploading image");
-    });
-
-    getURL(reference);
+    navigation.navigate("RecipeScreen", { imageURL: publicURL });    
+    //downloadImage(names);
   };
+
+  /*async function downloadImage(path) {
+    try {
+      const { data, error } = await supabase.storage.from('imgae-uploads').download(path);
+      console.log(data);
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      console.log('Error downloading image: ', error.message);
+    }
+  }*/
 
 
   const pickImage = async () => {
