@@ -214,16 +214,15 @@ export default function Recipe({ route }) {
       if (data.analyzedInstructions != '') {
         setSteps(data.analyzedInstructions);
       } else {
-        setSteps(recipeInfoNoSteps.analyzedInstructions);
+        setSteps([]);
       }
       if (!isSim) {
         let simRecipes = recipeArr.map(x => x.recipe);
         setSimilarRecipes(simRecipes);
       };
     })
-    .catch(() => {
-      //alert("recipe not found!");
-      setTitle("Recipe")
+    .catch((error) => {
+      setTitle("Recipe not found.");
     })
   };
 
@@ -280,7 +279,7 @@ export default function Recipe({ route }) {
         <View style={styles.contentContainer}>
           <Text style={styles.subtitle}>Steps</Text>
           <View style={{padding: 5}}>
-            {listSteps}
+            {(steps.length !== 0 && !loading) ? listSteps : <Text style={styles.noSteps}>No steps found.</Text>}
           </View>
         </View>
       </View>
@@ -372,6 +371,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'normal'
   },
+  noSteps: {
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center'
+  },  
   similarRecipesContainer: {
     backgroundColor: palette.blue,
     marginVertical: 0,
