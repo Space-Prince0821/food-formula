@@ -55,7 +55,7 @@ export default function CameraScreen() {
 
     console.log(publicURL);
 
-    navigation.navigate("RecipeScreen", { imageURL: publicURL });
+    navigation.navigate("RecipeScreen", { imageURL: publicURL, fromHistory: false });
   };
 
   const pickImage = async () => {

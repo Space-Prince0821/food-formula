@@ -34,9 +34,12 @@ export default function Recipe({ route }) {
   var numRecipes_spoon = 10;
   var numIngredients = 10;
 
-  const clarfaiUserId = 'mpaul97';
-  const clarfaiAppId = '19810bedef094ba093c4e41b57776ed1';
-  const clarfaiKey = 'b2456b5779b340c6a6aed1ab51424c30';
+  // const clarfaiUserId = 'mpaul97';
+  // const clarfaiAppId = '19810bedef094ba093c4e41b57776ed1';
+  // const clarfaiKey = 'b2456b5779b340c6a6aed1ab51424c30';
+  const clarfaiUserId = 'azu12kuyampw';
+  const clarfaiAppId = '0a0463fe83dd477782008bfe418a4e1f';
+  const clarfaiKey = '1631f0d390624615b86054111e14b211';
 
   const [loading, setLoading] = useState(false); // keep's loading state for loading UI
 
@@ -77,7 +80,7 @@ export default function Recipe({ route }) {
             arr.push({ res, recipe });
           })
           .catch (error => {
-            alert("Problem Analyzing Dish\n Error Code D");
+            alert("Problem Analyzing Dish\n Error Code Deep");
             navigation.navigate("Home");
           })
       );
@@ -135,12 +138,12 @@ export default function Recipe({ route }) {
               fetchDistances(data, url);
             })
             .catch(error => {
-              alert("Problem Analyzing Dish\n Error Code S");
+              alert("Problem Analyzing Dish\n Error Code Spoon\n", error);
               navigation.navigate("Home");
             });
           })
           .catch(error => {
-            alert("Problem Analyzing Dish\n Error Code C");
+            alert("Problem Analyzing Dish\n Error Code Clar\n", error);
             navigation.navigate("Home");
           });
   }
@@ -226,15 +229,15 @@ export default function Recipe({ route }) {
     })
   };
 
-  const a = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Hotdog_-_Evan_Swigart.jpg";
-  // const a = route.params.imageURL;
+  // const a = "https://upload.wikimedia.org/wikipedia/commons/f/fb/Hotdog_-_Evan_Swigart.jpg";
+  const a = route.params.imageURL;
 
   //Called every when page first rendered and every time page is updated
   useEffect(() => {
     setLoading(true);
     getRecipe(a);
     const setData = () => {
-      if (!fromHistory) {
+      if (!fromHistory || fromHistory === undefined) {
         if (recipeArr.length !== 0) {
           try {
             recipeArr.sort(compare);
@@ -243,9 +246,10 @@ export default function Recipe({ route }) {
             console.log("deep ai image sorting error", err);
           }
           let tempRecipe = recipeArr[0].recipe;
-          displayRecipe(tempRecipe.id, true);
+          displayRecipe(tempRecipe.id, false);
         }
-      } else {
+      } 
+      if (fromHistory) {
         displayRecipe(recipeId, false);
       }
     };
