@@ -29,7 +29,7 @@ const History = () => {
     let arr = new Array;
     let fetches = [];
     for (var i = 0; i < userRecipeIds.length; i++) {
-      var id = userRecipeIds[i];
+      let id = userRecipeIds[i];
       fetches.push(
         fetch (
           'https://api.spoonacular.com/recipes/' + id  + '/information?apiKey=' + spoonKey
