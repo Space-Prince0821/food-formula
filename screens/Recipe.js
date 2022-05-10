@@ -235,7 +235,7 @@ export default function Recipe({ route }) {
   //Called every when page first rendered and every time page is updated
   useEffect(() => {
     setLoading(true);
-    if (!fromHistory) {
+    if (!fromHistory || fromHistory === undefined) {
       getRecipe(a);
     } else {
       displayRecipe(recipeId, false);
@@ -255,7 +255,7 @@ export default function Recipe({ route }) {
     const timer = setTimeout(() => {
       setData();
       setLoading(false);
-    }, 5000);
+    }, 7000);
 
     return () => clearTimeout(timer);
 
